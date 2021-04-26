@@ -46,7 +46,7 @@ Chỉnh sửa quản trị viên
                             <label for="phone">
                             Số điện thoại
                             </label>
-                            <input type="text" id="phone" name="phone" class="form-control" value="{{ $thisAdmin->name }}" required>
+                            <input type="text" id="phone" name="phone" class="form-control" value="{{ $thisAdmin->phone }}" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">

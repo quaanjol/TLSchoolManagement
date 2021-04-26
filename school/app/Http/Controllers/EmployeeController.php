@@ -269,6 +269,18 @@ class EmployeeController extends Controller
             return redirect('/login');
         }
 
+        $validatedData = $request->validate([
+            'email' => 'unique:users|max:255',
+        ]);
+    
+        if ($validatedData->fails()) {
+            $noti = 'Địa chỉ email đã tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
         $eName = $request->name;
         $department_id = $request->department_id;
         $title = $request->title;
@@ -330,13 +342,14 @@ class EmployeeController extends Controller
         return redirect('admin/teacher/all');
     }
 
-    public function updateTeacher() {
+    public function updateTeacher($id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
         }
 
         $employee = $user->Employee;
+        $thisTeacher = Employee::find($id);
         $theme = $user->theme;
         $heading = ["vietnamese" => "Chỉnh sửa giảng viên", "english" => "Dashboard"];
         $departments = Department::all();
@@ -346,7 +359,8 @@ class EmployeeController extends Controller
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'departments' => $departments
+            'departments' => $departments,
+            'thisTeacher' => $thisTeacher
         ]);
     }
 
