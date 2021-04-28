@@ -93,6 +93,33 @@ Tạo mới phụ huynh
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
+                            <label for="dob">
+                                Ngày sinh
+                            </label>
+                            <input type="date" name="dob" id="dob" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="syear">
+                                Niên khóa
+                            </label>
+                            <input type="number" name="syear" id="syear" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="status">
+                                trạng thái
+                            </label>
+                            <select name="status" id="status" class="form-control" required>
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Khoá</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
                             <label for="img">
                                 Ảnh
                             </label>
