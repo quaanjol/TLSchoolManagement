@@ -89,7 +89,7 @@ Tất cả phụ huynh
                                 </a>
                             </th>
                             <th>
-                                <form method="post" action="../../parent/{{$parent->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
+                                <form method="post" action="../../parents/{{$parent->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
                                     @csrf
                                     @method('delete')
                                     <input type="submit" name="" value="Xoá" class="btn btn-danger">

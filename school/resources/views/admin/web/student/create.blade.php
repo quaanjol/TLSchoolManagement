@@ -30,6 +30,32 @@ Tạo mới phụ huynh
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
+                            <label for="department_id">
+                            Phụ huynh
+                            </label>
+                            <select name="parent_school_id" id="parent_school_id" class="form-control">
+                                <option value="" selected disabled>Chọn phụ huynh</option>
+                                @foreach($parentSchools as $parentSchool)
+                                    <option value="{{ $parentSchool->id }}">{{ $parentSchool->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="department_id">
+                            Khoa
+                            </label>
+                            <select name="department_id" id="department_id" class="form-control">
+                                <option value="" selected disabled>Chọn khoa</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
                             <label for="phone">
                             Số điện thoại
                             </label>

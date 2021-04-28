@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\ParentSchool;
 use App\Models\Student;
+use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
     // 
-    public function allParentSchools() {
+    public function allStudents() {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
@@ -22,22 +23,22 @@ class StudentController extends Controller
         $employee = $user->Employee;
 
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Tất cả phụ huynh", "english" => "Dashboard"];
-        $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
+        $heading = ["vietnamese" => "Tất cả sinh viên", "english" => "Dashboard"];
+        $students = Student::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.parentSchool.list')->with([
+        return view('admin.web.student.list')->with([
             'user' => $user,
             'employee' => $employee,
             'theme' => $theme,
             'heading' => $heading,
-            'parentSchools' => $parentSchools,
+            'students' => $students,
         ]);
     }
 
     // parents section
 
     // create & update employee
-    public function createParentSchool() {
+    public function createStudent() {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
@@ -45,19 +46,21 @@ class StudentController extends Controller
 
         $employee = $user->Employee;
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Tạo mới phụ huynh", "english" => "Dashboard"];
-        $students = Student::orderBy('id', 'DESC')->get();
+        $heading = ["vietnamese" => "Tạo mới sinh viên", "english" => "Dashboard"];
+        $departments = Department::orderBy('id', 'DESC')->get();
+        $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.parentSchool.create')->with([
+        return view('admin.web.student.create')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'students' => $students
+            'departments' => $departments,
+            'parentSchools' => $parentSchools
         ]);
     }
 
-    public function storeParentSchool(Request $request) {
+    public function storeStudent(Request $request) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
@@ -124,7 +127,7 @@ class StudentController extends Controller
         return redirect('admin/parent/all');
     }
 
-    public function updateParentSchool($id) {
+    public function updateStudent($id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
@@ -144,7 +147,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function storeUpdateParentSchool(Request $request, $id) {
+    public function storeUpdateStudent(Request $request, $id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');

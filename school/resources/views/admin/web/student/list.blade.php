@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Tất cả phụ huynh
+Tất cả sinh viên
 @endsection
 
 @section('style')
@@ -15,7 +15,7 @@ Tất cả phụ huynh
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.parent.create') }}"><button class="btn btn-primary mb-3">
+    <a href="{{ Route('admin.student.create') }}"><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
         
@@ -23,7 +23,7 @@ Tất cả phụ huynh
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            Tất cả phụ huynh
+            Tất cả sinh viên
             </h6>
         </div>
         <div class="card-body">
@@ -50,17 +50,17 @@ Tất cả phụ huynh
                       </tr>
                 </thead>
                 <tbody>
-                    @foreach($parentSchools as $parent)
+                    @foreach($students as $student)
                         <tr>
                             <th scope="col">
                                 {{$loop->iteration}}
                             </th>
                             <th>
-                                {{ $parent->name }}
+                                {{ $student->name }}
                             </th>
                             <th>
-                                @if(strpos("http", $parent->img) == false)
-                                <img src="{{ URL::asset($parent->img) }}" alt="" width="50px" height="50px" style="object-fit: cover; border-radius: 50%;">
+                                @if(strpos("http", $student->img) == false)
+                                <img src="{{ URL::asset($student->img) }}" alt="" width="50px" height="50px" style="object-fit: cover; border-radius: 50%;">
                                 @else
                                 <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px" style="border-radius: 50%;">
                                 @endif
@@ -68,28 +68,54 @@ Tất cả phụ huynh
                             <th>
                                 <ul class="custom-ul">
                                     <li>
-                                        Địa chỉ: {{ $parent->address }}
+                                        Khoa: {{ $student->Department->name }}
                                     </li>
                                     <li>
-                                        SĐT: {{ $parent->phone }}
+                                        Phụ huynh: 
                                     </li>
                                     <li>
-                                        Email: {{ $parent->email }}
+                                        Địa chỉ: {{ $student->address }}
                                     </li>
                                     <li>
-                                        Sinh viên:
+                                        SĐT: {{ $student->phone }}
                                     </li>
+                                    <li>
+                                        Email: {{ $student->email }}
+                                    </li>
+                                    <li>
+                                        Giới tính: 
+                                        @if($student->gender == 1)
+                                        Nam
+                                        @elseif($student->gender == 2)
+                                        Nữ
+                                        @else
+                                        Khác
+                                        @endif
+                                    </li>
+                                    <li>
+                                        Ngày sinh: {{date('d/m/Y', strtotime($student->dob))}}
+                                    </li>
+                                    <li>
+                                        Niên khóa: {{ $student->syear }}
+                                    </li>
+                                    <th scope="col">
+                                        @if($student->status == 1)
+                                        <i class="fas fa-check-circle text-success"></i>
+                                        @else
+                                        <i class="fas fa-times-circle text-danger"></i>
+                                        @endif
+                                    </th>
                                 </ul>
                             </th>
                             <th>
-                                <a href="{{ Route('admin.parent.update', ['id' => $parent->id]) }}">
+                                <a href="{{ Route('admin.student.update', ['id' => $student->id]) }}">
                                     <button class="btn btn-info">
                                     Sửa
                                     </button>
                                 </a>
                             </th>
                             <th>
-                                <form method="post" action="../../parent/{{$parent->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
+                                <form method="post" action="../../students/{{$student->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
                                     @csrf
                                     @method('delete')
                                     <input type="submit" name="" value="Xoá" class="btn btn-danger">
@@ -108,6 +134,6 @@ Tất cả phụ huynh
 
 @section('scripts')
 <script>
-    document.getElementById('parentLi').classList.add('active');
+    document.getElementById('studentLi').classList.add('active');
 </script>
 @endsection
