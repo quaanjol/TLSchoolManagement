@@ -69,7 +69,7 @@ Tất cả quản trị viên
                                 @if(strpos("http", $administrator->img) == false)
                                 <img src="{{ URL::asset($administrator->img) }}" alt="" width="50px" height="50px" style="object-fit: cover; border-radius: 50%;">
                                 @else
-                                <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px">
+                                <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px" style="border-radius: 50%;">
                                 @endif
                             </th>
                             <th>

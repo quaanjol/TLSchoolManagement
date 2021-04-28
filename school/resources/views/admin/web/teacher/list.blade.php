@@ -65,7 +65,7 @@ Tất cả giảng viên
                                 @if(strpos("http", $teacher->img) == false)
                                 <img src="{{ URL::asset($teacher->img) }}" alt="" width="50px" height="50px" style="object-fit: cover; border-radius: 50%;">
                                 @else
-                                <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px">
+                                <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px" style="border-radius: 50%;">
                                 @endif
                             </th>
                             <th>

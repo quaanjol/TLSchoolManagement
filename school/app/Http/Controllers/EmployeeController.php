@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Teacher;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -60,18 +60,6 @@ class EmployeeController extends Controller
             return redirect('/login');
         }
 
-        $validatedData = $request->validate([
-            'email' => 'unique:users|max:255',
-        ]);
-    
-        if ($validatedData->fails()) {
-            $noti = 'Địa chỉ email đã tồn tại.';
-            $request->session()->flash('danger', $noti);
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
         $eName = $request->name;
         $department_id = $request->department_id;
         $phone = $request->phone;
@@ -108,7 +96,11 @@ class EmployeeController extends Controller
         if($cover_path != '') {
             $employee->img = $cover_path;
         } else {
-            $employee->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            if($gender == 1) {
+                $employee->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            } else {
+                $employee->img = 'https://i.imgur.com/YWhjr9n.png';
+            }
         }
 
         $newUser = new User();
@@ -120,6 +112,13 @@ class EmployeeController extends Controller
         $newUser->title = "";
         $newUser->theme = "danger";
         $newUser->password = bcrypt("admin123");
+
+        $this->validate($request, [
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+            ],
+        ]);
 
         $newUser->save();
 
@@ -212,6 +211,13 @@ class EmployeeController extends Controller
         $newUser->role_id = $role_id;
         $newUser->email = $email;
 
+        // $this->validate($request, [
+        //     'email' => [
+        //         'required',
+        //         Rule::unique('users')->ignore($user->id),
+        //     ],
+        // ]);
+
         $newUser->save();
         $employee->save();
 
@@ -269,18 +275,6 @@ class EmployeeController extends Controller
             return redirect('/login');
         }
 
-        $validatedData = $request->validate([
-            'email' => 'unique:users|max:255',
-        ]);
-    
-        if ($validatedData->fails()) {
-            $noti = 'Địa chỉ email đã tồn tại.';
-            $request->session()->flash('danger', $noti);
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
         $eName = $request->name;
         $department_id = $request->department_id;
         $title = $request->title;
@@ -317,7 +311,11 @@ class EmployeeController extends Controller
         if($cover_path != '') {
             $employee->img = $cover_path;
         } else {
-            $employee->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            if($gender == 1) {
+                $employee->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            } else {
+                $employee->img = 'https://i.imgur.com/YWhjr9n.png';
+            }
         }
 
         $newUser = new User();
@@ -330,14 +328,21 @@ class EmployeeController extends Controller
         $newUser->email = $email;
         $newUser->title = "";
         $newUser->theme = "danger";
-        $newUser->password = bcrypt("admin123");
+        $newUser->password = bcrypt("teacher123");
+
+        $this->validate($request, [
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+            ],
+        ]);
 
         $newUser->save();
 
         $employee->user_id = $newUser->id;
         $employee->save();
 
-        $noti = 'Thêm thành công. Để nhân viên mới login, dùng email của nhân viên đó với password "admin123"';
+        $noti = 'Thêm thành công. Để giáo viên mới login, dùng email của giáo viên đó với password "teacher123"';
         $request->session()->flash('success', $noti);
         return redirect('admin/teacher/all');
     }
@@ -418,6 +423,13 @@ class EmployeeController extends Controller
         $newUser->role_id = 3;
         $newUser->title = $title;
         $newUser->email = $email;
+
+        // $this->validate($request, [
+        //     'email' => [
+        //         'required',
+        //         Rule::unique('users')->ignore($user->id),
+        //     ],
+        // ]);
 
         $newUser->save();
         $employee->save();

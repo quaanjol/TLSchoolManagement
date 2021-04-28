@@ -61,16 +61,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     // parents
     Route::get('admin/parent/all', 'App\Http\Controllers\ParentSchoolController@allParentSchools')->name('admin.parent.all');
-    Route::get('admin/parent/create', 'App\Http\Controllers\ParentSchoolController@createParentShool')->name('admin.parent.create');
+    Route::get('admin/parent/create', 'App\Http\Controllers\ParentSchoolController@createParentSchool')->name('admin.parent.create');
     Route::post('admin/parent/create', 'App\Http\Controllers\ParentSchoolController@storeParentSchool')->name('admin.parent.store');
     Route::get('admin/parent/update/{id}', 'App\Http\Controllers\ParentSchoolController@updateParentSchool')->name('admin.parent.update');
     Route::post('admin/parent/update/{id}', 'App\Http\Controllers\ParentSchoolController@storeUpdateParentSchool')->name('admin.parent.storeUpdate');\
 
     // students
-    Route::get('admin/student/all', 'App\Http\Controllers\StudentController@allParentSchools')->name('admin.student.all');
-    Route::get('admin/student/create', 'App\Http\Controllers\StudentController@createParentShool')->name('admin.student.create');
-    Route::post('admin/student/create', 'App\Http\Controllers\StudentController@storeParentSchool')->name('admin.student.store');
-    Route::get('admin/student/update/{id}', 'App\Http\Controllers\StudentController@updateParentSchool')->name('admin.student.update');
-    Route::post('admin/student/update/{id}', 'App\Http\Controllers\StudentController@storeUpdateParentSchool')->name('admin.student.storeUpdate');
+    Route::get('admin/student/all', 'App\Http\Controllers\StudentController@allStudents')->name('admin.student.all');
+    Route::get('admin/student/create', 'App\Http\Controllers\StudentController@createStudent')->name('admin.student.create');
+    Route::post('admin/student/create', 'App\Http\Controllers\StudentController@storeStudent')->name('admin.student.store');
+    Route::get('admin/student/update/{id}', 'App\Http\Controllers\StudentController@updateStudent')->name('admin.student.update');
+    Route::post('admin/student/update/{id}', 'App\Http\Controllers\StudentController@storeUpdateStudent')->name('admin.student.storeUpdate');
 
 });

@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\ParentSchool;
 use App\Models\Student;
 use App\Models\Employee;
+use Illuminate\Validation\Rule;
 
 class ParentSchoolController extends Controller
 {
@@ -24,7 +25,7 @@ class ParentSchoolController extends Controller
         $heading = ["vietnamese" => "Tất cả phụ huynh", "english" => "Dashboard"];
         $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.administrator.list')->with([
+        return view('admin.web.parentSchool.list')->with([
             'user' => $user,
             'employee' => $employee,
             'theme' => $theme,
@@ -47,7 +48,7 @@ class ParentSchoolController extends Controller
         $heading = ["vietnamese" => "Tạo mới phụ huynh", "english" => "Dashboard"];
         $students = Student::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.teacher.create')->with([
+        return view('admin.web.parentSchool.create')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
@@ -60,18 +61,6 @@ class ParentSchoolController extends Controller
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
-        }
-
-        $validatedData = $request->validate([
-            'email' => 'unique:users|max:255',
-        ]);
-    
-        if ($validatedData->fails()) {
-            $noti = 'Địa chỉ email đã tồn tại.';
-            $request->session()->flash('danger', $noti);
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
         }
 
         $eName = $request->name;
@@ -100,7 +89,11 @@ class ParentSchoolController extends Controller
         if($cover_path != '') {
             $parentSchool->img = $cover_path;
         } else {
-            $parentSchool->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            if($gender == 1) {
+                $parentSchool->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            } else {
+                $parentSchool->img = 'https://i.imgur.com/YWhjr9n.png';
+            }
         }
 
         $newUser = new User();
@@ -113,6 +106,13 @@ class ParentSchoolController extends Controller
         $newUser->title = "";
         $newUser->theme = "danger";
         $newUser->password = bcrypt("parent123");
+
+        $this->validate($request, [
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+            ],
+        ]);
 
         $newUser->save();
 
@@ -135,7 +135,7 @@ class ParentSchoolController extends Controller
         $theme = $user->theme;
         $heading = ["vietnamese" => "Chỉnh sửa phụ huynh", "english" => "Dashboard"];
 
-        return view('admin.web.parent.update')->with([
+        return view('admin.web.parentSchool.update')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
@@ -144,7 +144,7 @@ class ParentSchoolController extends Controller
         ]);
     }
 
-    public function storeUpdateTeacher(Request $request, $id) {
+    public function storeUpdateParentSchool(Request $request, $id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
@@ -188,6 +188,13 @@ class ParentSchoolController extends Controller
         // define this user as a parent
         $newUser->role_id = 4;
         $newUser->email = $email;
+
+        // $this->validate($request, [
+        //     'email' => [
+        //         'required',
+        //         Rule::unique('users')->ignore($user->id),
+        //     ],
+        // ]);
 
         $newUser->save();
         $parentSchool->save();
