@@ -54,18 +54,15 @@ Tạo mới phụ huynh
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
-                            <label for="dob">
-                                Ngày sinh
+                            <label for="gender">
+                            Giới tính
                             </label>
-                            <input type="date" name="dob" id="dob" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label for="doj">
-                                Ngày làm việc
-                            </label>
-                            <input type="date" name="doj" id="doj" class="form-control" required>
+                            <select name="gender" id="gender" class="form-control" required>
+                                <option value="" selected disabled>Chọn giới tính</option>
+                                <option value="1">Nam</option>
+                                <option value="2">Nữ</option>
+                                <option value="3">Khác</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -75,17 +72,6 @@ Tạo mới phụ huynh
                             </label>
                             <br>
                             <input type="file" name="img" id="img" class="form-file-control">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label for="status">
-                                trạng thái
-                            </label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="1">Hoạt động</option>
-                                <option value="0">Khoá</option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-12">

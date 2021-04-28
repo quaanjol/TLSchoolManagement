@@ -20,6 +20,7 @@ class CreateParentSchoolsTable extends Migration
             $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('phone');
+            $table->integer('gender');
             $table->string('img')->default('https://i.imgur.com/jJ4Iy9p.png');
             $table->date('deleted_at')->nullable();
             $table->timestamps();

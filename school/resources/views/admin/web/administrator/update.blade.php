@@ -72,9 +72,9 @@ Chỉnh sửa quản trị viên
                             </label>
                             <select name="gender" id="gender" class="form-control" required>
                                 <option value="" selected disabled>Chọn giới tính</option>
-                                <option value="1" <?php if($thisAdmin->department_id == 1) { ?>selected<?php } ?>>Nam</option>
-                                <option value="2" <?php if($thisAdmin->department_id == 2) { ?>selected<?php } ?>>Nữ</option>
-                                <option value="3" <?php if($thisAdmin->department_id == 3) { ?>selected<?php } ?>>Khác</option>
+                                <option value="1" <?php if($thisAdmin->gender == 1) { ?>selected<?php } ?>>Nam</option>
+                                <option value="2" <?php if($thisAdmin->gender == 2) { ?>selected<?php } ?>>Nữ</option>
+                                <option value="3" <?php if($thisAdmin->gender == 3) { ?>selected<?php } ?>>Khác</option>
                             </select>
                         </div>
                     </div>

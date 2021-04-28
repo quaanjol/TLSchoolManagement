@@ -60,7 +60,7 @@ Tạo mới giảng viên
                             <label for="phone">
                             Số điện thoại
                             </label>
-                            <input type="text" id="phone" name="phone" class="form-control">
+                            <input type="text" id="phone" name="phone" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -68,7 +68,7 @@ Tạo mới giảng viên
                             <label for="email">
                             Email
                             </label>
-                            <input type="email" id="email" name="email" class="form-control">
+                            <input type="email" id="email" name="email" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">

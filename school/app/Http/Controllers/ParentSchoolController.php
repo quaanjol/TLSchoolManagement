@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\ParentSchool;
 use App\Models\Student;
+use App\Models\Employee;
 
 class ParentSchoolController extends Controller
 {
@@ -74,15 +75,10 @@ class ParentSchoolController extends Controller
         }
 
         $eName = $request->name;
-        $department_id = $request->department_id;
-        $title = $request->title;
         $phone = $request->phone;
         $email = $request->email;
         $address = $request->address;
         $gender = $request->gender;
-        $dob = $request->dob;
-        $doj = $request->doj;
-        $status = $request->status;
 
         // handle image upload
         $name = '';
@@ -95,64 +91,56 @@ class ParentSchoolController extends Controller
             $cover_path = "image_upload/" . $imgName;
         }
 
-        $employee = new Employee();
-        $employee->name = $eName;
-        $employee->type = 'teacher';
-        $employee->department_id = $department_id;
-        $employee->email = $email;
-        $employee->phone = $phone;
-        $employee->address = $address;
-        $employee->gender = $gender;
-        $employee->dob = $dob;
-        $employee->doj = $doj;
-        $employee->status = $status;
+        $parentSchool = new ParentSchool();
+        $parentSchool->name = $eName;
+        $parentSchool->email = $email;
+        $parentSchool->phone = $phone;
+        $parentSchool->address = $address;
+        $parentSchool->gender = $gender;
         if($cover_path != '') {
-            $employee->img = $cover_path;
+            $parentSchool->img = $cover_path;
         } else {
-            $employee->img = 'https://i.imgur.com/jJ4Iy9p.png';
+            $parentSchool->img = 'https://i.imgur.com/jJ4Iy9p.png';
         }
 
         $newUser = new User();
         $newUser->name = $eName;
 
         // define this user as a teacher
-        $newUser->role_id = 2;
-        $newUser->username = $eName . $dob;
-        $newUser->title = $title;
+        $newUser->role_id = 4;
+        $newUser->username = $eName;
         $newUser->email = $email;
         $newUser->title = "";
         $newUser->theme = "danger";
-        $newUser->password = bcrypt("admin123");
+        $newUser->password = bcrypt("parent123");
 
         $newUser->save();
 
-        $employee->user_id = $newUser->id;
-        $employee->save();
+        $parentSchool->user_id = $newUser->id;
+        $parentSchool->save();
 
-        $noti = 'Thêm thành công. Để nhân viên mới login, dùng email của nhân viên đó với password "admin123"';
+        $noti = 'Thêm thành công. Để phụ huynh mới login, dùng email của phụ huynh đó với password "parent123"';
         $request->session()->flash('success', $noti);
-        return redirect('admin/teacher/all');
+        return redirect('admin/parent/all');
     }
 
-    public function updateTeacher($id) {
+    public function updateParentSchool($id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
         }
 
         $employee = $user->Employee;
-        $thisTeacher = Employee::find($id);
+        $thisParent = ParentSchool::find($id);
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Chỉnh sửa giảng viên", "english" => "Dashboard"];
-        $departments = Department::all();
+        $heading = ["vietnamese" => "Chỉnh sửa phụ huynh", "english" => "Dashboard"];
 
-        return view('admin.web.teacher.update')->with([
+        return view('admin.web.parent.update')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'departments' => $departments,
-            'thisTeacher' => $thisTeacher
+            'thisParent' => $thisParent
         ]);
     }
 
@@ -162,23 +150,18 @@ class ParentSchoolController extends Controller
             return redirect('/login');
         }
 
-        $employee = Employee::find($id);
-        $newUser = User::find($employee->user_id);
+        $parentSchool = ParentSchool::find($id);
+        $newUser = User::find($parentSchool->user_id);
 
-        if($employee == null || $employee->type != 'teacher') {
+        if($parentSchool == null) {
             return redirect()->back();
         }
 
         $eName = $request->name;
-        $department_id = $request->department_id;
-        $title = $request->title;
         $phone = $request->phone;
         $email = $request->email;
         $address = $request->address;
         $gender = $request->gender;
-        $dob = $request->dob;
-        $doj = $request->doj;
-        $status = $request->status;
 
         // handle image upload
         $name = '';
@@ -191,54 +174,59 @@ class ParentSchoolController extends Controller
             $cover_path = "image_upload/" . $imgName;
         }
 
-        $employee->name = $eName;
-        $employee->department_id = $department_id;
-        $employee->email = $email;
-        $employee->phone = $phone;
-        $employee->address = $address;
-        $employee->gender = $gender;
-        $employee->dob = $dob;
-        $employee->doj = $doj;
-        $employee->status = $status;
+        $parentSchool->name = $eName;
+        $parentSchool->email = $email;
+        $parentSchool->phone = $phone;
+        $parentSchool->address = $address;
+        $parentSchool->gender = $gender;
         if($cover_path != '') {
-            $employee->img = $cover_path;
+            $parentSchool->img = $cover_path;
         }
 
         $newUser->name = $eName;
 
-        // define this user as a teacher
-        $newUser->role_id = 3;
-        $newUser->title = $title;
+        // define this user as a parent
+        $newUser->role_id = 4;
         $newUser->email = $email;
 
         $newUser->save();
-        $employee->save();
+        $parentSchool->save();
 
         $noti = 'Chỉnh sửa thành công.';
         $request->session()->flash('success', $noti);
-        return redirect('admin/teacher/all');
+        return redirect('admin/parent/all');
     }
 
     public function destroy(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
             return redirect('/login');
         }
 
-        $employee = Employee::find($id);
-        if($employee != null) {
-            $thisUser = User::find($employee->user_id);
+        $parentSchool = ParentSchool::find($id);
+        if($parentSchool != null) {
+            $thisUser = User::find($parentSchool->user_id);
             if($thisUser != null) {
                 $thisUser->delete();
             }
-            $employee->delete();
+            $parentSchool->delete();
+
+            $ownedStudents = Student::where('parent_id', '=', $parentSchool->id)->get();
+
+            if($ownedStudents->count() > 0) {
+                foreach($ownedStudents as $student) {
+                    $student->parent_id = null;
+                    $student->save();
+                }
+            }
+
             $noti = 'Xoá thành công.';
             $request->session()->flash('success', $noti);
-            return redirect('/admin/administrator/all');
+            return redirect('/admin/parent/all');
         } else {
             $noti = 'Xoá không thành công.';
             $request->session()->flash('danger', $noti);
-            return redirect('/admin/administrator/all');
+            return redirect('/admin/parent/all');
         }
     }
 }

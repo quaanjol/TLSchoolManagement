@@ -86,9 +86,9 @@ Chỉnh sửa giảng viên
                             </label>
                             <select name="gender" id="gender" class="form-control" required>
                                 <option value="" selected disabled>Chọn giới tính</option>
-                                <option value="1" <?php if($thisTeacher->department_id == 1) { ?>selected<?php } ?>>Nam</option>
-                                <option value="2" <?php if($thisTeacher->department_id == 2) { ?>selected<?php } ?>>Nữ</option>
-                                <option value="3" <?php if($thisTeacher->department_id == 3) { ?>selected<?php } ?>>Khác</option>
+                                <option value="1" <?php if($thisTeacher->gender == 1) { ?>selected<?php } ?>>Nam</option>
+                                <option value="2" <?php if($thisTeacher->gender == 2) { ?>selected<?php } ?>>Nữ</option>
+                                <option value="3" <?php if($thisTeacher->gender == 3) { ?>selected<?php } ?>>Khác</option>
                             </select>
                         </div>
                     </div>
