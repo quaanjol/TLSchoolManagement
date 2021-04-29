@@ -13,8 +13,8 @@ class Department extends Model
     protected $date = ['deleted_at'];
 
     // has many employees
-    public function Empoyees() {
-        return $this->hasMany('App\Models\Empoyee');
+    public function Employees() {
+        return $this->hasMany('App\Models\Employee');
     }
 
     public function Students() {

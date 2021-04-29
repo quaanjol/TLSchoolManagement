@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/parent/create', 'App\Http\Controllers\ParentSchoolController@createParentSchool')->name('admin.parent.create');
     Route::post('admin/parent/create', 'App\Http\Controllers\ParentSchoolController@storeParentSchool')->name('admin.parent.store');
     Route::get('admin/parent/update/{id}', 'App\Http\Controllers\ParentSchoolController@updateParentSchool')->name('admin.parent.update');
-    Route::post('admin/parent/update/{id}', 'App\Http\Controllers\ParentSchoolController@storeUpdateParentSchool')->name('admin.parent.storeUpdate');\
+    Route::post('admin/parent/update/{id}', 'App\Http\Controllers\ParentSchoolController@storeUpdateParentSchool')->name('admin.parent.storeUpdate');
 
     // students
     Route::get('admin/student/all', 'App\Http\Controllers\StudentController@allStudents')->name('admin.student.all');
@@ -72,5 +72,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/student/create', 'App\Http\Controllers\StudentController@storeStudent')->name('admin.student.store');
     Route::get('admin/student/update/{id}', 'App\Http\Controllers\StudentController@updateStudent')->name('admin.student.update');
     Route::post('admin/student/update/{id}', 'App\Http\Controllers\StudentController@storeUpdateStudent')->name('admin.student.storeUpdate');
+
+    // departments
+    Route::get('admin/department/all', 'App\Http\Controllers\DepartmentController@allDepartments')->name('admin.department.all');
+    Route::get('admin/department/create', 'App\Http\Controllers\DepartmentController@createDepartment')->name('admin.department.create');
+    Route::post('admin/department/create', 'App\Http\Controllers\DepartmentController@storeDepartment')->name('admin.department.store');
+    Route::get('admin/department/update/{id}', 'App\Http\Controllers\DepartmentController@updateDepartment')->name('admin.department.update');
+    Route::post('admin/department/update/{id}', 'App\Http\Controllers\DepartmentController@storeUpdateDepartment')->name('admin.department.storeUpdate');
 
 });
