@@ -218,11 +218,11 @@ class ParentSchoolController extends Controller
             }
             $parentSchool->delete();
 
-            $ownedStudents = Student::where('parent_id', '=', $parentSchool->id)->get();
+            $ownedStudents = Student::where('parent_school_id', '=', $parentSchool->id)->get();
 
             if($ownedStudents->count() > 0) {
                 foreach($ownedStudents as $student) {
-                    $student->parent_id = null;
+                    $student->parent_school_id = null;
                     $student->save();
                 }
             }

@@ -1,12 +1,12 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Chỉnh sửa phụ huynh
+Tạo mới sinh viên
 @endsection
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.parent.all') }}">
+    <a href="{{ Route('admin.student.all') }}">
         <button class="btn btn-primary mb-3" type="button">
             Quay lại danh sách
         </button>
@@ -17,7 +17,7 @@ Chỉnh sửa phụ huynh
             <h6 class="m-0 font-weight-bold text-primary">From {{ config('app.name') }} with <i class="fas fa-heart text-danger"></i></h6>
         </div>
         <div class="card-body">
-            <form action="{{ Route('admin.parent.storeUpdate', ['id' => $thisParent->id ]) }}" method="post" enctype="multipart/form-data" id="mainForm">
+            <form action="{{ Route('admin.student.storeUpdate', ['id' => $thisStudent->id ]) ) }}" method="post" enctype="multipart/form-data" id="mainForm">
                 @csrf
                 <div class="row">
                     <div class="col-12 col-md-6">
@@ -25,7 +25,33 @@ Chỉnh sửa phụ huynh
                             <label for="name">
                             Tên
                             </label>
-                            <input type="text" name="name" id="name" class="form-control" value="{{ $thisParent->name }}" required>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $thisStudent->name }}" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="department_id">
+                            Phụ huynh
+                            </label>
+                            <select name="parent_school_id" id="parent_school_id" class="form-control">
+                                <option value="" selected disabled>Chọn phụ huynh</option>
+                                @foreach($parentSchools as $parentSchool)
+                                    <option value="{{ $parentSchool->id }}" <?php if($thisStudent->parent_school_id == $parentSchool->id) { ?>selected<?php } ?>>{{ $parentSchool->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="department_id">
+                            Khoa
+                            </label>
+                            <select name="department_id" id="department_id" class="form-control">
+                                <option value="" selected disabled>Chọn khoa</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}" <?php if($thisStudent->department_id == $department->id) { ?>selected<?php } ?>>{{ $department->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -33,7 +59,7 @@ Chỉnh sửa phụ huynh
                             <label for="phone">
                             Số điện thoại
                             </label>
-                            <input type="text" id="phone" name="phone" value="{{ $thisParent->phone }}" class="form-control" required>
+                            <input type="text" id="phone" name="phone" value="{{ $thisStudent->phone }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -41,7 +67,7 @@ Chỉnh sửa phụ huynh
                             <label for="email">
                             Email
                             </label>
-                            <input type="email" id="email" name="email" class="form-control" value="{{ $thisParent->email }}" required>
+                            <input type="email" id="email" name="email" value="{{ $thisStudent->email }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -49,7 +75,7 @@ Chỉnh sửa phụ huynh
                             <label for="address">
                                 Địa chỉ
                             </label>
-                            <input type="text" name="address" id="address" class="form-control" value="{{ $thisParent->address }}" required>
+                            <input type="text" name="address" id="address" value="{{ $thisStudent->address }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -59,9 +85,36 @@ Chỉnh sửa phụ huynh
                             </label>
                             <select name="gender" id="gender" class="form-control" required>
                                 <option value="" selected disabled>Chọn giới tính</option>
-                                <option value="1" <?php if($thisParent->gender == 1) { ?>selected<?php } ?>>Nam</option>
-                                <option value="2" <?php if($thisParent->gender == 2) { ?>selected<?php } ?>>Nữ</option>
-                                <option value="3" <?php if($thisParent->gender == 3) { ?>selected<?php } ?>>Khác</option>
+                                <option value="1" <?php if($thisStudent->gender == 1) { ?>selected<?php } ?>>Nam</option>
+                                <option value="2" <?php if($thisStudent->gender == 2) { ?>selected<?php } ?>>Nữ</option>
+                                <option value="3" <?php if($thisStudent->gender == 3) { ?>selected<?php } ?>>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="dob">
+                                Ngày sinh
+                            </label>
+                            <input type="date" name="dob" id="dob" class="form-control" value="{{ $thisStudent->dob }}" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="syear">
+                                Niên khóa
+                            </label>
+                            <input type="number" name="syear" id="syear" class="form-control" value="{{ $thisStudent->syear }}" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="status">
+                                Trạng thái
+                            </label>
+                            <select name="status" id="status" class="form-control" required>
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Khoá</option>
                             </select>
                         </div>
                     </div>
@@ -90,6 +143,6 @@ Chỉnh sửa phụ huynh
 
 @section('scripts')
 <script>
-    document.getElementById('parentLi').classList.add('active');
+    document.getElementById('studentLi').classList.add('active');
 </script>
 @endsection

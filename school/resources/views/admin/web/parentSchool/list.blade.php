@@ -76,9 +76,18 @@ Tất cả phụ huynh
                                     <li>
                                         Email: {{ $parent->email }}
                                     </li>
+                                    @if($parent->Students != null)
                                     <li>
-                                        Sinh viên:
+                                        Sinh viên: 
+                                        <ul class="custom-ul">
+                                        @foreach($parent->Students as $student)
+                                        <li>
+                                            {{ $student->name }}
+                                        </li>
+                                        @endforeach
+                                        </ul>
                                     </li>
+                                    @endif
                                 </ul>
                             </th>
                             <th>
