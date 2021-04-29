@@ -70,9 +70,11 @@ Tất cả sinh viên
                                     <li>
                                         Khoa: {{ $student->Department->name }}
                                     </li>
+                                    @if($student->ParentSchool != null)
                                     <li>
-                                        Phụ huynh: 
+                                        Phụ huynh: {{ $student->ParentSchool->name }}
                                     </li>
+                                    @endif
                                     <li>
                                         Địa chỉ: {{ $student->address }}
                                     </li>

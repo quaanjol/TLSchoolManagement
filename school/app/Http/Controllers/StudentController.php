@@ -71,6 +71,12 @@ class StudentController extends Controller
         $email = $request->email;
         $address = $request->address;
         $gender = $request->gender;
+        $dob = $request->dob;
+        $syear = $request->syear;
+        $status = $request->status;
+        $department_id = $request->department_id;
+        $parent_school_id = $request->parent_school_id;
+        // dd($email);
 
         // handle image upload
         $name = '';
@@ -83,19 +89,24 @@ class StudentController extends Controller
             $cover_path = "image_upload/" . $imgName;
         }
 
-        $parentSchool = new ParentSchool();
-        $parentSchool->name = $eName;
-        $parentSchool->email = $email;
-        $parentSchool->phone = $phone;
-        $parentSchool->address = $address;
-        $parentSchool->gender = $gender;
+        $student = new Student();
+        $student->name = $eName;
+        $student->email = $email;
+        $student->phone = $phone;
+        $student->address = $address;
+        $student->gender = $gender;
+        $student->dob = $dob;
+        $student->syear = $syear;
+        $student->status = $status;
+        $student->department_id = $department_id;
+        $student->parent_school_id = $parent_school_id;
         if($cover_path != '') {
-            $parentSchool->img = $cover_path;
+            $student->img = $cover_path;
         } else {
             if($gender == 1) {
-                $parentSchool->img = 'https://i.imgur.com/jJ4Iy9p.png';
+                $student->img = 'https://i.imgur.com/jJ4Iy9p.png';
             } else {
-                $parentSchool->img = 'https://i.imgur.com/YWhjr9n.png';
+                $student->img = 'https://i.imgur.com/YWhjr9n.png';
             }
         }
 
@@ -103,12 +114,12 @@ class StudentController extends Controller
         $newUser->name = $eName;
 
         // define this user as a teacher
-        $newUser->role_id = 4;
+        $newUser->role_id = 5;
         $newUser->username = $eName;
         $newUser->email = $email;
         $newUser->title = "";
         $newUser->theme = "danger";
-        $newUser->password = bcrypt("parent123");
+        $newUser->password = bcrypt("student123");
 
         $this->validate($request, [
             'email' => [
@@ -116,15 +127,16 @@ class StudentController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
         ]);
+        // dd($user);
 
         $newUser->save();
 
-        $parentSchool->user_id = $newUser->id;
-        $parentSchool->save();
+        $student->user_id = $newUser->id;
+        $student->save();
 
-        $noti = 'Thêm thành công. Để phụ huynh mới login, dùng email của phụ huynh đó với password "parent123"';
+        $noti = 'Thêm thành công. Để sinh viên mới login, dùng email của sinh viên đó với password "student123"';
         $request->session()->flash('success', $noti);
-        return redirect('admin/parent/all');
+        return redirect('admin/student/all');
     }
 
     public function updateStudent($id) {
@@ -134,16 +146,20 @@ class StudentController extends Controller
         }
 
         $employee = $user->Employee;
-        $thisParent = ParentSchool::find($id);
+        $thisStudent = Student::find($id);
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Chỉnh sửa phụ huynh", "english" => "Dashboard"];
+        $heading = ["vietnamese" => "Chỉnh sửa sinh viên", "english" => "Dashboard"];
+        $departments = Department::orderBy('id', 'DESC')->get();
+        $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.parentSchool.update')->with([
+        return view('admin.web.student.update')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'thisParent' => $thisParent
+            'thisStudent' => $thisStudent,
+            'departments' => $departments,
+            'parentSchools' => $parentSchools
         ]);
     }
 
@@ -153,10 +169,10 @@ class StudentController extends Controller
             return redirect('/login');
         }
 
-        $parentSchool = ParentSchool::find($id);
-        $newUser = User::find($parentSchool->user_id);
+        $student = Student::find($id);
+        $newUser = User::find($student->user_id);
 
-        if($parentSchool == null) {
+        if($student == null) {
             return redirect()->back();
         }
 
@@ -165,6 +181,11 @@ class StudentController extends Controller
         $email = $request->email;
         $address = $request->address;
         $gender = $request->gender;
+        $dob = $request->dob;
+        $syear = $request->syear;
+        $status = $request->status;
+        $department_id = $request->department_id;
+        $parent_school_id = $request->parent_school_id;
 
         // handle image upload
         $name = '';
@@ -177,19 +198,24 @@ class StudentController extends Controller
             $cover_path = "image_upload/" . $imgName;
         }
 
-        $parentSchool->name = $eName;
-        $parentSchool->email = $email;
-        $parentSchool->phone = $phone;
-        $parentSchool->address = $address;
-        $parentSchool->gender = $gender;
+        $student->name = $eName;
+        $student->email = $email;
+        $student->phone = $phone;
+        $student->address = $address;
+        $student->gender = $gender;
+        $student->dob = $dob;
+        $student->syear = $syear;
+        $student->status = $status;
+        $student->department_id = $department_id;
+        $student->parent_school_id = $parent_school_id;
         if($cover_path != '') {
-            $parentSchool->img = $cover_path;
+            $student->img = $cover_path;
         }
 
         $newUser->name = $eName;
 
         // define this user as a parent
-        $newUser->role_id = 4;
+        $newUser->role_id = 5;
         $newUser->email = $email;
 
         // $this->validate($request, [
@@ -200,11 +226,11 @@ class StudentController extends Controller
         // ]);
 
         $newUser->save();
-        $parentSchool->save();
+        $student->save();
 
         $noti = 'Chỉnh sửa thành công.';
         $request->session()->flash('success', $noti);
-        return redirect('admin/parent/all');
+        return redirect('admin/student/all');
     }
 
     public function destroy(Request $request, $id) {
@@ -213,30 +239,21 @@ class StudentController extends Controller
             return redirect('/login');
         }
 
-        $parentSchool = ParentSchool::find($id);
-        if($parentSchool != null) {
-            $thisUser = User::find($parentSchool->user_id);
+        $student = Student::find($id);
+        if($student != null) {
+            $thisUser = User::find($student->user_id);
             if($thisUser != null) {
                 $thisUser->delete();
             }
-            $parentSchool->delete();
-
-            $ownedStudents = Student::where('parent_id', '=', $parentSchool->id)->get();
-
-            if($ownedStudents->count() > 0) {
-                foreach($ownedStudents as $student) {
-                    $student->parent_id = null;
-                    $student->save();
-                }
-            }
+            $student->delete();
 
             $noti = 'Xoá thành công.';
             $request->session()->flash('success', $noti);
-            return redirect('/admin/parent/all');
+            return redirect('/admin/student/all');
         } else {
             $noti = 'Xoá không thành công.';
             $request->session()->flash('danger', $noti);
-            return redirect('/admin/parent/all');
+            return redirect('/admin/student/all');
         }
     }
 }

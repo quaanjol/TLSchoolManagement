@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Tất cả phụ huynh
+Tất cả môn học
 @endsection
 
 @section('style')
@@ -15,7 +15,7 @@ Tất cả phụ huynh
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.parent.create') }}"><button class="btn btn-primary mb-3">
+    <a href="{{ Route('admin.subject.create') }}"><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
         
@@ -23,7 +23,7 @@ Tất cả phụ huynh
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            Tất cả phụ huynh
+            Tất cả môn học
             </h6>
         </div>
         <div class="card-body">
@@ -36,13 +36,13 @@ Tất cả phụ huynh
                             Tên
                         </th>
                         <th scope="col">
-                            Ảnh
-                        </th>
-                        <th scope="col">
                             Thông tin
                         </th>
                         <th scope="col">
-                            Chỉnh sửa
+                            Mô tả
+                        </th>
+                        <th scope="col">
+                            Sửa
                         </th>
                         <th scope="col">
                             Xoá
@@ -50,55 +50,47 @@ Tất cả phụ huynh
                       </tr>
                 </thead>
                 <tbody>
-                    @foreach($parentSchools as $parent)
+                    @foreach($subjects as $subject)
                         <tr>
                             <th scope="col">
                                 {{$loop->iteration}}
                             </th>
                             <th>
-                                {{ $parent->name }}
-                            </th>
-                            <th>
-                                @if(strpos("http", $parent->img) == false)
-                                <img src="{{ URL::asset($parent->img) }}" alt="" width="50px" height="50px" style="object-fit: cover; border-radius: 50%;">
-                                @else
-                                <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px" style="border-radius: 50%;">
-                                @endif
+                                {{ $subject->name }}
                             </th>
                             <th>
                                 <ul class="custom-ul">
                                     <li>
-                                        Địa chỉ: {{ $parent->address }}
+                                        Mã môn học: {{ $subject->code }}
                                     </li>
                                     <li>
-                                        SĐT: {{ $parent->phone }}
+                                        Số tín chỉ: {{ $subject->credit }}
                                     </li>
                                     <li>
-                                        Email: {{ $parent->email }}
-                                    </li>
-                                    @if($parent->Students->count() > 0)
-                                    <li>
-                                        Sinh viên: 
+                                        Trực thuộc khoa: 
                                         <ul class="custom-ul">
-                                        @foreach($parent->Students as $student)
-                                        <li>
-                                            {{ $student->name }}
-                                        </li>
-                                        @endforeach
+                                            @foreach($subject->departments as $department)
+                                            <li>
+                                                {{ $department }}
+                                            </li>
+                                            @endforeach
                                         </ul>
                                     </li>
-                                    @endif
+                                    
                                 </ul>
                             </th>
                             <th>
-                                <a href="{{ Route('admin.parent.update', ['id' => $parent->id]) }}">
+                                {{ $subject->description }}
+                            </th>
+                            <th>
+                                <a href="{{ Route('admin.subject.update', ['id' => $subject->id]) }}">
                                     <button class="btn btn-info">
                                     Sửa
                                     </button>
                                 </a>
                             </th>
                             <th>
-                                <form method="post" action="../../parents/{{$parent->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
+                                <form method="post" action="../../subjects/{{$subject->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
                                     @csrf
                                     @method('delete')
                                     <input type="submit" name="" value="Xoá" class="btn btn-danger">
@@ -117,6 +109,6 @@ Tất cả phụ huynh
 
 @section('scripts')
 <script>
-    document.getElementById('parentLi').classList.add('active');
+    document.getElementById('subjectLi').classList.add('active');
 </script>
 @endsection

@@ -17,7 +17,7 @@ Tạo mới phụ huynh
             <h6 class="m-0 font-weight-bold text-primary">From {{ config('app.name') }} with <i class="fas fa-heart text-danger"></i></h6>
         </div>
         <div class="card-body">
-            <form action="{{ Route('admin.parent.store') }}" method="post" enctype="multipart/form-data" id="mainForm">
+            <form action="{{ Route('admin.student.store') }}" method="post" enctype="multipart/form-data" id="mainForm">
                 @csrf
                 <div class="row">
                     <div class="col-12 col-md-6">
@@ -110,7 +110,7 @@ Tạo mới phụ huynh
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="status">
-                                trạng thái
+                                Trạng thái
                             </label>
                             <select name="status" id="status" class="form-control" required>
                                 <option value="1">Hoạt động</option>
@@ -143,6 +143,6 @@ Tạo mới phụ huynh
 
 @section('scripts')
 <script>
-    document.getElementById('parentLi').classList.add('active');
+    document.getElementById('studentLi').classList.add('active');
 </script>
 @endsection

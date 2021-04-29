@@ -12,9 +12,9 @@ class Department extends Model
     use SoftDeletes;
     protected $date = ['deleted_at'];
 
-    // has many employees
-    public function Empoyees() {
-        return $this->hasMany('App\Models\Empoyee');
+    // has many employees, students
+    public function Employees() {
+        return $this->hasMany('App\Models\Employee');
     }
 
     public function Students() {
