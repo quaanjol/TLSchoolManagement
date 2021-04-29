@@ -14,6 +14,6 @@ class Subject extends Model
 
     // has many courses
     public function Courses() {
-        return $this->hasOne('App\Models\Course');
+        return $this->hasMany('App\Models\Course');
     }
 }

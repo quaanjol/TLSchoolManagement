@@ -80,4 +80,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/department/update/{id}', 'App\Http\Controllers\DepartmentController@updateDepartment')->name('admin.department.update');
     Route::post('admin/department/update/{id}', 'App\Http\Controllers\DepartmentController@storeUpdateDepartment')->name('admin.department.storeUpdate');
 
+    // subjects
+    Route::get('admin/subject/all', 'App\Http\Controllers\SubjectController@all')->name('admin.subject.all');
+    Route::get('admin/subject/create', 'App\Http\Controllers\SubjectController@create')->name('admin.subject.create');
+    Route::post('admin/subject/create', 'App\Http\Controllers\SubjectController@store')->name('admin.subject.store');
+    Route::get('admin/subject/update/{id}', 'App\Http\Controllers\SubjectController@update')->name('admin.subject.update');
+    Route::post('admin/subject/update/{id}', 'App\Http\Controllers\SubjectController@storeUpdate')->name('admin.subject.storeUpdate');
+
 });
