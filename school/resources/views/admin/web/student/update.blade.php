@@ -17,7 +17,7 @@ Tạo mới sinh viên
             <h6 class="m-0 font-weight-bold text-primary">From {{ config('app.name') }} with <i class="fas fa-heart text-danger"></i></h6>
         </div>
         <div class="card-body">
-            <form action="{{ Route('admin.student.storeUpdate', ['id' => $thisStudent->id ]) ) }}" method="post" enctype="multipart/form-data" id="mainForm">
+            <form action="{{ Route('admin.student.storeUpdate', ['id' => $thisStudent->id ]) }}" method="post" enctype="multipart/form-data" id="mainForm">
                 @csrf
                 <div class="row">
                     <div class="col-12 col-md-6">
