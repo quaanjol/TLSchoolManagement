@@ -44,6 +44,26 @@ class CourseController extends Controller
         ]);
     }
 
+    public function view($id) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+            return redirect('/login');
+        }
+
+        $employee = $user->Employee;
+        $theme = $user->theme;
+        $heading = ["vietnamese" => "Thông tin khoá học", "english" => "Dashboard"];
+        $course = Course::find($id);
+
+        return view('admin.web.course.view')->with([
+            'user' => $user,
+            'theme' => $theme,
+            'employee' => $employee,
+            'heading' => $heading,
+            'course' => $course,
+        ]);
+    }
+
     public function create() {
         $user = auth()->user();
         if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
@@ -55,12 +75,12 @@ class CourseController extends Controller
         $heading = ["vietnamese" => "Tạo mới khoá học", "english" => "Dashboard"];
         $subjects = Subject::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.subject.create')->with([
+        return view('admin.web.course.create')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'courses' => $courses,
+            'subjects' => $subjects,
         ]);
     }
 
@@ -110,13 +130,13 @@ class CourseController extends Controller
         $heading = ["vietnamese" => "Chỉnh sửa khoá học", "english" => "Dashboard"];
         $subjects = Subject::orderBy('id', 'DESC')->get();
 
-        return view('admin.web.subject.update')->with([
+        return view('admin.web.course.update')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'subject' => $subject,
-            'courses' => $courses,
+            'course' => $course,
+            'subjects' => $subjects,
         ]);
     }
 

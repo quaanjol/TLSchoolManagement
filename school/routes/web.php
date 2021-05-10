@@ -93,5 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/course/create', 'App\Http\Controllers\CourseController@store')->name('admin.course.store');
     Route::get('admin/course/update/{id}', 'App\Http\Controllers\CourseController@update')->name('admin.course.update');
     Route::post('admin/course/update/{id}', 'App\Http\Controllers\CourseController@storeUpdate')->name('admin.course.storeUpdate');
+    Route::get('admin/course/view/{id}', 'App\Http\Controllers\CourseController@view')->name('admin.course.view');
 
 });
