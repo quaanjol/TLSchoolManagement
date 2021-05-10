@@ -27,80 +27,84 @@ Tất cả môn học
             </h6>
         </div>
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">
-                            Tên
-                        </th>
-                        <th scope="col">
-                            Thông tin
-                        </th>
-                        <th scope="col">
-                            Mô tả
-                        </th>
-                        <th scope="col">
-                            Sửa
-                        </th>
-                        <th scope="col">
-                            Xoá
-                        </th>
-                      </tr>
-                </thead>
-                <tbody>
-                    @foreach($subjects as $subject)
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">
-                                {{$loop->iteration}}
+                                Tên
                             </th>
-                            <th>
-                                {{ $subject->name }}
+                            <th scope="col">
+                                Thông tin
                             </th>
-                            <th>
-                                <ul class="custom-ul">
-                                    <li>
-                                        Mã môn học: {{ $subject->code }}
-                                    </li>
-                                    <li>
-                                        Số tín chỉ: {{ $subject->credit }}
-                                    </li>
-                                    <li>
-                                        Trực thuộc khoa: 
-                                        <ul class="custom-ul">
-                                            @foreach($subject->departments as $department)
-                                            <li>
-                                                {{ $department }}
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                    
-                                </ul>
+                            <th scope="col">
+                                Mô tả
                             </th>
-                            <th>
-                                {{ $subject->description }}
+                            <th scope="col">
+                                Sửa
                             </th>
-                            <th>
-                                <a href="{{ Route('admin.subject.update', ['id' => $subject->id]) }}">
-                                    <button class="btn btn-info">
-                                    Sửa
-                                    </button>
-                                </a>
-                            </th>
-                            <th>
-                                <form method="post" action="../../subjects/{{$subject->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
-                                    @csrf
-                                    @method('delete')
-                                    <input type="submit" name="" value="Xoá" class="btn btn-danger">
-                                </form>
+                            <th scope="col">
+                                Xoá
                             </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-          </div>
+                    </thead>
+                    <tbody>
+                        @foreach($subjects as $subject)
+                            <tr>
+                                <th scope="col">
+                                    {{$loop->iteration}}
+                                </th>
+                                <th>
+                                    {{ $subject->name }}
+                                </th>
+                                <th>
+                                    <ul class="custom-ul">
+                                        <li>
+                                            Mã môn học: {{ $subject->code }}
+                                        </li>
+                                        <li>
+                                            Số tín chỉ: {{ $subject->credit }}
+                                        </li>
+                                        <li>
+                                            Trực thuộc khoa: 
+                                            <ul class="custom-ul">
+                                                @foreach($subject->departments as $department)
+                                                <li>
+                                                    {{ $department }}
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                        
+                                    </ul>
+                                </th>
+                                <th>
+                                    {{ $subject->description }}
+                                </th>
+                                <th>
+                                    <a href="{{ Route('admin.subject.update', ['id' => $subject->id]) }}">
+                                        <button class="btn btn-info">
+                                        Sửa
+                                        </button>
+                                    </a>
+                                </th>
+                                <th>
+                                    <form method="post" action="../../subjects/{{$subject->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="submit" name="" value="Xoá" class="btn btn-danger">
+                                    </form>
+                                </th>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="d-flex justify-content-center">
+                {{ $subjects->links() }}
+            </div>
         </div>
         
     </div>

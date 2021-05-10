@@ -19,6 +19,7 @@ class CreateCoursesTable extends Migration
             $table->string('name');
             $table->date('start');
             $table->date('end');
+            $table->integer('quantity');
             $table->integer('status')->default(1);
             $table->date('deleted_at')->nullable();
             $table->timestamps();

@@ -23,7 +23,7 @@ class ParentSchoolController extends Controller
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tất cả phụ huynh", "english" => "Dashboard"];
-        $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
+        $parentSchools = ParentSchool::orderBy('id', 'DESC')->paginate(6);
 
         return view('admin.web.parentSchool.list')->with([
             'user' => $user,
@@ -132,6 +132,11 @@ class ParentSchoolController extends Controller
 
         $employee = $user->Employee;
         $thisParent = ParentSchool::find($id);
+
+        if($thisParent == null) {
+            return redirect('admin/parent/all');
+        }
+
         $theme = $user->theme;
         $heading = ["vietnamese" => "Chỉnh sửa phụ huynh", "english" => "Dashboard"];
 

@@ -22,7 +22,7 @@ class EmployeeController extends Controller
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tất cả quản trị viên", "english" => "Dashboard"];
-        $administrators = Employee::where('type' , '=', 'employee')->get();
+        $administrators = Employee::where('type' , '=', 'employee')->paginate(6);
 
         return view('admin.web.administrator.list')->with([
             'user' => $user,
@@ -237,7 +237,7 @@ class EmployeeController extends Controller
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tất cả giảng viên", "english" => "Dashboard"];
-        $teachers = Employee::where('type' , '=', 'teacher')->get();
+        $teachers = Employee::where('type' , '=', 'teacher')->paginate(6);
 
         return view('admin.web.teacher.list')->with([
             'user' => $user,

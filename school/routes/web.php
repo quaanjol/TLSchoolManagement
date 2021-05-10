@@ -87,4 +87,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/subject/update/{id}', 'App\Http\Controllers\SubjectController@update')->name('admin.subject.update');
     Route::post('admin/subject/update/{id}', 'App\Http\Controllers\SubjectController@storeUpdate')->name('admin.subject.storeUpdate');
 
+    // courses
+    Route::get('admin/course/all', 'App\Http\Controllers\CourseController@all')->name('admin.course.all');
+    Route::get('admin/course/create', 'App\Http\Controllers\CourseController@create')->name('admin.course.create');
+    Route::post('admin/course/create', 'App\Http\Controllers\CourseController@store')->name('admin.course.store');
+    Route::get('admin/course/update/{id}', 'App\Http\Controllers\CourseController@update')->name('admin.course.update');
+    Route::post('admin/course/update/{id}', 'App\Http\Controllers\CourseController@storeUpdate')->name('admin.course.storeUpdate');
+
 });

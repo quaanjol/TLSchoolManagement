@@ -24,7 +24,7 @@ class SubjectController extends Controller
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tất cả sinh viên", "english" => "Dashboard"];
-        $subjects = Subject::orderBy('id', 'DESC')->get();
+        $subjects = Subject::orderBy('id', 'DESC')->paginate(6);
 
         foreach($subjects as $subject) {
             $departments = [];

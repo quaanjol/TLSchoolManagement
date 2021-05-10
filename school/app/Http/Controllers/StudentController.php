@@ -147,6 +147,11 @@ class StudentController extends Controller
 
         $employee = $user->Employee;
         $thisStudent = Student::find($id);
+
+        if($thisStudent == null) {
+            return redirect('admin/student/all');
+        }
+
         $theme = $user->theme;
         $heading = ["vietnamese" => "Chỉnh sửa sinh viên", "english" => "Dashboard"];
         $departments = Department::orderBy('id', 'DESC')->get();
