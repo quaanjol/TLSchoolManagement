@@ -49,10 +49,11 @@ Chỉnh sửa môn học
                             <label for="gender">
                             Trực thuộc khoa
                             </label>
+                            <input type="checkbox" class="" name="checkAllDepartments" id="checkAllDepartments" value="">
                             @foreach($departments as $department)
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="departments[]" <?php if((in_array($department->name, $subject->departments))) { ?>checked<?php } ?> value="{{ $department->id }}">{{ $department->name }}
+                                    <input type="checkbox" class="form-check-input department_input" name="departments[]" <?php if((in_array($department->name, $subject->departments))) { ?>checked<?php } ?> value="{{ $department->id }}">{{ $department->name }}
                                 </label>
                             </div>
                             @endforeach
@@ -83,5 +84,17 @@ Chỉnh sửa môn học
 @section('scripts')
 <script>
     document.getElementById('parentLi').classList.add('active');
+
+    document.getElementById('checkAllDepartments').addEventListener('change', (e) => {
+        if(e.target.checked == true) {
+            Array.from(document.querySelectorAll('.department_input')).forEach(item => {
+                item.checked = true;
+            })
+        } else {
+            Array.from(document.querySelectorAll('.department_input')).forEach(item => {
+                item.checked = false;
+            })
+        }
+    })
 </script>
 @endsection
