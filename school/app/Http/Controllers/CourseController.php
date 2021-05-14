@@ -74,6 +74,7 @@ class CourseController extends Controller
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tạo mới khoá học", "english" => "Dashboard"];
         $subjects = Subject::orderBy('id', 'DESC')->get();
+        $teachers = Employee::orderBy('id', 'DESC')->where('type', '=', 'teacher')->get();
 
         return view('admin.web.course.create')->with([
             'user' => $user,
@@ -81,6 +82,7 @@ class CourseController extends Controller
             'employee' => $employee,
             'heading' => $heading,
             'subjects' => $subjects,
+            'teachers' => $teachers
         ]);
     }
 
@@ -92,6 +94,7 @@ class CourseController extends Controller
 
         $eName = $request->name;
         $subject_id = $request->subject_id;
+        $employee_id = $request->employee_id;
         $start = $request->start;
         $end = $request->end;
         $status = $request->status;
@@ -100,6 +103,7 @@ class CourseController extends Controller
         $course = new Course();
         $course->name = $eName;
         $course->subject_id = $subject_id;
+        $course->employee_id = $employee_id;
         $course->start = $start;
         $course->end = $end;
         $course->status = $status;
@@ -120,6 +124,7 @@ class CourseController extends Controller
 
         $employee = $user->Employee;
         $course = Course::find($id);
+        $teachers = Employee::orderBy('id', 'DESC')->where('type', '=', 'teacher')->get();
 
         if($course == null) {
             return redirect('admin/course/all');
@@ -137,6 +142,7 @@ class CourseController extends Controller
             'heading' => $heading,
             'course' => $course,
             'subjects' => $subjects,
+            'teachers' => $teachers
         ]);
     }
 
@@ -154,6 +160,7 @@ class CourseController extends Controller
 
         $eName = $request->name;
         $subject_id = $request->subject_id;
+        $employee_id = $request->employee_id;
         $start = $request->start;
         $end = $request->end;
         $status = $request->status;
@@ -161,6 +168,7 @@ class CourseController extends Controller
 
         $course->name = $eName;
         $course->subject_id = $subject_id;
+        $course->employee_id = $employee_id;
         $course->start = $start;
         $course->end = $end;
         $course->status = $status;

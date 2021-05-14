@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('subjects', 'App\Http\Controllers\SubjectController');
     
     
-    // admin
+    // <= admin =>
     Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@show')->name('admin.dashboard');
     Route::get('/theme/{color}', 'App\Http\Controllers\AdminController@changeTheme')->name('theme.change');
     Route::get('/admin/profile', 'App\Http\Controllers\AdminController@profile')->name('admin.profile');
@@ -95,4 +95,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/course/update/{id}', 'App\Http\Controllers\CourseController@storeUpdate')->name('admin.course.storeUpdate');
     Route::get('admin/course/view/{id}', 'App\Http\Controllers\CourseController@view')->name('admin.course.view');
 
+
+    // <= student =>
+    Route::get('/student/dashboard', 'App\Http\Controllers\Student\StudentController@show')->name('student.dashboard');
+    Route::get('/theme/{color}', 'App\Http\Controllers\AdminController@changeTheme')->name('theme.change');
+    Route::get('/student/profile', 'App\Http\Controllers\Student\StudentController@profile')->name('student.profile');
+    Route::post('/student/profile', 'App\Http\Controllers\Student\StudentController@profileStore')->name('student.profile.store');
+
+    // teacher
+    Route::get('/student/teacher/all', 'App\Http\Controllers\Student\TeacherController@show')->name('student.teacher.all');
+
+    // department
+    Route::get('/student/department/all', 'App\Http\Controllers\Student\DepartmentController@show')->name('student.department.all');
+
+    // subject
+    Route::get('/student/subject/all', 'App\Http\Controllers\Student\SubjectController@show')->name('student.subject.all');
+
+    // course
+    Route::get('/student/course/all', 'App\Http\Controllers\Student\CourseController@show')->name('student.course.all');
 });

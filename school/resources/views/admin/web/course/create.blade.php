@@ -59,6 +59,19 @@ Tạo mới khoá học
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
+                            <label for="employee_id">
+                            Giảng viên
+                            </label>
+                            <select name="employee_id" id="employee_id" class="form-control" required>
+                                <option value="" disabled selected>Chọn giảng viên</option>
+                                @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
                             <label for="quantity">
                             Sô lượng sinh viên
                             </label>

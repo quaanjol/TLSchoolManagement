@@ -64,6 +64,9 @@ Tất cả khoá học
                                             Môn học: {{ $course->Subject->name }}
                                         </li>
                                         <li>
+                                            Giảng viên: {{ $course->Employee->name }}
+                                        </li>
+                                        <li>
                                             Bắt đầu: {{ $course->start }}
                                         </li>
                                         <li>
