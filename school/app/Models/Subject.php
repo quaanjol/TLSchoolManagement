@@ -16,4 +16,14 @@ class Subject extends Model
     public function Courses() {
         return $this->hasMany('App\Models\Course');
     }
+
+    // check if student can register
+    public function checkStudent($departmentId) {
+        $valiDepartments = unserialize($this->departments);
+        if(in_array($departmentId, $valiDepartments)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

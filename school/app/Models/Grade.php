@@ -12,8 +12,12 @@ class Grade extends Model
     use SoftDeletes;
     protected $date = ['deleted_at'];
 
-    // belongs to course
+    // belongs to course, student
     public function Course() {
         return $this->belongsTo('App\Models\Course');
+    }
+
+    public function Student() {
+        return $this->belongsTo('App\Models\Student');
     }
 }

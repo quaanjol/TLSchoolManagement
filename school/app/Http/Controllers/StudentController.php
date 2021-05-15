@@ -10,13 +10,14 @@ use App\Models\Student;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\_CONST;
 
 class StudentController extends Controller
 {
     // 
     public function allStudents() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -40,7 +41,7 @@ class StudentController extends Controller
     // create & update employee
     public function createStudent() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -62,7 +63,7 @@ class StudentController extends Controller
 
     public function storeStudent(Request $request) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -141,7 +142,7 @@ class StudentController extends Controller
 
     public function updateStudent($id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -170,7 +171,7 @@ class StudentController extends Controller
 
     public function storeUpdateStudent(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -240,7 +241,7 @@ class StudentController extends Controller
 
     public function destroy(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

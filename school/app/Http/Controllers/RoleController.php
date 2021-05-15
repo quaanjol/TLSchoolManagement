@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Employee;
+use App\Http\Controllers\_CONST;
 
 class RoleController extends Controller
 {
     // show
     public function show() {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

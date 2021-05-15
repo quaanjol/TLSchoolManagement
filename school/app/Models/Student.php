@@ -25,8 +25,29 @@ class Student extends Model
         return $this->belongsTo('App\Models\ParentSchool');
     }
 
-    // has many final grades
+    // has many final grades, grades
     public function FinalGrades() {
         return $this->hasMany('App\Models\FinalGrade');
+    }
+
+    public function Grades() {
+        return $this->hasMany('App\Models\Grade');
+    }
+
+    // has one gpa
+    public function Gpa() {
+        return $this->hasOne('App\Models\Gpa');
+    }
+
+    // check if this student has registered this course
+    public function checkRegisteredCourse($id) {
+        $registeredCourses = $this->courses;
+        if($registeredCourses == null) {
+            return false;
+        } else {
+            if(in_array($id, unserialize($registeredCourses))) {
+                return true;
+            }
+        }
     }
 }

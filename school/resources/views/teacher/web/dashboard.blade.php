@@ -1,4 +1,4 @@
-@extends('artsyv.layouts.master')
+@extends('student.layouts.master')
 
 @section('title')
 Dashboard
@@ -8,106 +8,90 @@ Dashboard
 <div class="container">
     
     <div class="row">
-        <!-- expertises -->
+        <!-- departments -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                            @if($language == 'vietnamese')
-                            Chuyên môn
-                            @else
-                            Expertises
-                            @endif
+                                Khoa
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $expertises }}
+                                {{ $departments->count() }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dumbbell fa-2x text-gray-300"></i>
+                            <i class="fas fa-building fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- educations -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            @if($language == 'vietnamese')
-                            Mốc học vấn
-                            @else
-                            Educations
-                            @endif
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $educations }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- skills -->
+        <!-- teachers -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            @if($language == 'vietnamese')
-                            Kỹ năng
-                            @else
-                            Skills
-                            @endif
+                                Giảng viên
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $skills }}
+                                {{ $teachers->count() }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-code fa-2x text-gray-300"></i>
+                            <i class="fas fa-chalkboard-teacher fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- works -->
+        <!-- subjects -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <div class="card border-left-dark shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            @if($language == 'vietnamese')
-                            Sản phẩm
-                            @else
-                            Products
-                            @endif
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                Môn học
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $works }}
+                                {{ $subjects->count() }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-code-branch fa-2x text-gray-300"></i>
+                            <i class="fas fa-child fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- courses -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Khoá học
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ $courses->count() }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-child fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
     <div class="row">
@@ -221,18 +205,6 @@ Dashboard
 <script>
     document.getElementById('dashboardLi').classList.add('active');
 
-    var expertises = "{{ $expertises }}";
-    var educations = "{{ $educations }}";
-    var skills = "{{ $skills }}";
-    var products = "{{ $works }}";
-    var data = [expertises, educations, skills, products];
-
-    // area chart
-    drawAreaChart(["Expertises", "Educations", "Skills", "Products"], data);
-
-    // pie chart
-    var backgroundColor = ['#e74a3b', '#f6c23e', '#4e73df', '#1cc88a'];
-    var hoverBackgroundColor = ['#e74a3b', '#f6c23e', '#4e73df', '#1cc88a']
-    drawPieChart(["Expertises", "Educations", "Skills", "Products"], data, backgroundColor, hoverBackgroundColor);
+    
 </script>
 @endsection

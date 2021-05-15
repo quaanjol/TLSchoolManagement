@@ -130,7 +130,10 @@
                     Thao tác:
                     </h6>
                     <a class="collapse-item" href="{{ route('student.course.all') }}">
-                    Hiển thị tất cả
+                    Khoá học hiện tại
+                    </a>
+                    <a class="collapse-item" href="{{ route('student.course.registered.all') }}">
+                    Khoá học đăng kí
                     </a>
                 </div>
             </div>

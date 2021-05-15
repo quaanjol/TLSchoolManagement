@@ -10,13 +10,14 @@ use App\Models\Student;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\_CONST;
 
 class SubjectController extends Controller
 {
     // 
     public function all() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -45,7 +46,7 @@ class SubjectController extends Controller
 
     public function create() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -65,7 +66,7 @@ class SubjectController extends Controller
 
     public function store(Request $request) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -92,7 +93,7 @@ class SubjectController extends Controller
 
     public function update($id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -125,7 +126,7 @@ class SubjectController extends Controller
 
     public function storeUpdate(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -156,7 +157,7 @@ class SubjectController extends Controller
 
     public function destroy(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

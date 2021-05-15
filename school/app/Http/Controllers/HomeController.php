@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\_CONST;
 
 class HomeController extends Controller
 {
@@ -29,16 +30,15 @@ class HomeController extends Controller
         }
 
         // dd($user);
-        
-        if($user->role_id == 1) {
+        if($user->role_id == _CONST::ADMIN_ROLE_ID) {
             return redirect('/admin/dashboard');
-        } else if($user->role_id == 2) {
+        } else if($user->role_id == _CONST::SUB_ADMIN_ROLE_ID) {
             return redirect('/admin/dashboard');
-        } else if($user->role_id == 3) {
+        } else if($user->role_id == _CONST::TEACHER_ROLE_ID) {
             return redirect('/teacher/dashboard');
-        } else if($user->role_id == 4) {
+        } else if($user->role_id == _CONST::PARENT_ROLE_ID) {
             return redirect('/parent/dashboard');
-        } else if($user->role_id == 5) {
+        } else if($user->role_id == _CONST::STUDENT_ROLE_ID) {
             return redirect('/student/dashboard');
         }
     }

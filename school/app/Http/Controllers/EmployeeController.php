@@ -8,13 +8,14 @@ use App\Models\Role;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\_CONST;
 
 class EmployeeController extends Controller
 {
     // 
     public function allAdministrators() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -36,7 +37,7 @@ class EmployeeController extends Controller
     // create & update employee
     public function createEmployee() {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || $user->role_id != _CONST::ADMIN_ROLE_ID) {
             return redirect('/login');
         }
 
@@ -56,7 +57,7 @@ class EmployeeController extends Controller
 
     public function storeEmployee(Request $request) {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || $user->role_id != _CONST::ADMIN_ROLE_ID) {
             return redirect('/login');
         }
 
@@ -132,7 +133,7 @@ class EmployeeController extends Controller
 
     public function updateEmployee($id) {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || $user->role_id != _CONST::ADMIN_ROLE_ID) {
             return redirect('/login');
         }
 
@@ -159,7 +160,7 @@ class EmployeeController extends Controller
 
     public function storeUpdateEmployee(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || $user->role_id != _CONST::ADMIN_ROLE_ID) {
             return redirect('/login');
         }
 
@@ -229,7 +230,7 @@ class EmployeeController extends Controller
     // teachers section
     public function allTeachers() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -251,7 +252,7 @@ class EmployeeController extends Controller
     // create & update employee
     public function createTeacher() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -271,7 +272,7 @@ class EmployeeController extends Controller
 
     public function storeTeacher(Request $request) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -349,7 +350,7 @@ class EmployeeController extends Controller
 
     public function updateTeacher($id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -371,7 +372,7 @@ class EmployeeController extends Controller
 
     public function storeUpdateTeacher(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -441,7 +442,7 @@ class EmployeeController extends Controller
 
     public function destroy(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || $user->role_id != 1) {
+        if($user == null || $user->role_id != _CONST::ADMIN_ROLE_ID) {
             return redirect('/login');
         }
 

@@ -42,7 +42,7 @@ Tất cả khoá học
                                 Trạng thái
                             </th>
                             <th scope="col">
-                                Đăng kí
+                                Điểm
                             </th>
                         </tr>
                     </thead>
@@ -82,13 +82,7 @@ Tất cả khoá học
                                     @endif
                                 </th>
                                 <th>
-                                    @if($student->checkRegisteredCourse($course->id))
-                                    <button class="btn btn-primary" disabled="true">Đã đăng kí</button>
-                                    @else
-                                    <a href="{{ route('student.course.register', ['id' => $course->id]) }}">
-                                        <button class="btn btn-danger" <?php if($course->Subject->checkStudent($student->department_id) == false) {?>disabled="true"<?php } ?>>Đăng kí</button>
-                                    </a>
-                                    @endif
+                                    
                                 </th>
                             </tr>
                         @endforeach

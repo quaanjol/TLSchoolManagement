@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\_CONST;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Department;
@@ -18,12 +17,12 @@ use App\Models\Attendance;
 use App\Models\FinalGrade;
 use App\Models\Grade;
 
-class StudentController extends Controller
+class TeacherController extends Controller
 {
     // show
     public function show() {
         $user = auth()->user();
-        if($user == null || $user->role_id != _CONST::STUDENT_ROLE_ID) {
+        if($user == null || $user->role_id != 3) {
             return redirect('/login');
         }
 

@@ -1,7 +1,7 @@
 @extends('student.layouts.master')
 
 @section('title')
-Tất cả khoá học
+Tất cả môn học
 @endsection
 
 @section('style')
@@ -15,7 +15,7 @@ Tất cả khoá học
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.course.create') }}"><button class="btn btn-primary mb-3">
+    <a href="{{ Route('admin.subject.create') }}"><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
         
@@ -23,7 +23,7 @@ Tất cả khoá học
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            Tất cả khoá học
+            Tất cả môn học
             </h6>
         </div>
         <div class="card-body">
@@ -39,56 +39,42 @@ Tất cả khoá học
                                 Thông tin
                             </th>
                             <th scope="col">
-                                Trạng thái
-                            </th>
-                            <th scope="col">
-                                Đăng kí
+                                Mô tả
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($courses as $course)
+                        @foreach($subjects as $subject)
                             <tr>
                                 <th scope="col">
                                     {{$loop->iteration}}
                                 </th>
                                 <th>
-                                    <a href="">{{ $course->name }}</a>
+                                    {{ $subject->name }}
                                 </th>
                                 <th>
                                     <ul class="custom-ul">
                                         <li>
-                                            Môn học: {{ $course->Subject->name }}
+                                            Mã môn học: {{ $subject->code }}
                                         </li>
                                         <li>
-                                            Giảng viên: {{ $course->Employee->name }}
+                                            Số tín chỉ: {{ $subject->credit }}
                                         </li>
                                         <li>
-                                            Bắt đầu: {{ $course->start }}
+                                            Trực thuộc khoa: 
+                                            <ul class="custom-ul">
+                                                @foreach($subject->departments as $department)
+                                                <li>
+                                                    {{ $department }}
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                         </li>
-                                        <li>
-                                            Số lượng sinh viên: {{ $course->quantity }}
-                                        </li>
-                                        <li>
-                                            Kết thúc: {{ $course->end }}
-                                        </li>   
+                                        
                                     </ul>
                                 </th>
                                 <th>
-                                    @if($course->status == 1)
-                                    <span class="badge badge-success">Processing</span>
-                                    @else 
-                                    <span class="badge badge-danger">Finish</span>
-                                    @endif
-                                </th>
-                                <th>
-                                    @if($student->checkRegisteredCourse($course->id))
-                                    <button class="btn btn-primary" disabled="true">Đã đăng kí</button>
-                                    @else
-                                    <a href="{{ route('student.course.register', ['id' => $course->id]) }}">
-                                        <button class="btn btn-danger" <?php if($course->Subject->checkStudent($student->department_id) == false) {?>disabled="true"<?php } ?>>Đăng kí</button>
-                                    </a>
-                                    @endif
+                                    {{ $subject->description }}
                                 </th>
                             </tr>
                         @endforeach
@@ -97,7 +83,7 @@ Tất cả khoá học
             </div>
             
             <div class="d-flex justify-content-center">
-                {{ $courses->links() }}
+                {{ $subjects->links() }}
             </div>
         </div>
         
@@ -107,6 +93,6 @@ Tất cả khoá học
 
 @section('scripts')
 <script>
-    document.getElementById('courseLi').classList.add('active');
+    document.getElementById('subjectLi').classList.add('active');
 </script>
 @endsection

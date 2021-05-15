@@ -15,13 +15,14 @@ use App\Models\Post;
 use App\Models\Attendance;
 use App\Models\FinalGrade;
 use App\Models\Grade;
+use App\Http\Controllers\_CONST;
 
 class AdminController extends Controller
 {
     // show
     public function show() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

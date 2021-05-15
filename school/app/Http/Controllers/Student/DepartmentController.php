@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Department;
+use App\Http\Controllers\_CONST;
 
 class DepartmentController extends Controller
 {
     // show
     public function show() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 5)) {
+        if($user == null || ($user->role_id != _CONST::STUDENT_ROLE_ID)) {
             return redirect('/login');
         }
 

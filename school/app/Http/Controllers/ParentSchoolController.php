@@ -9,13 +9,14 @@ use App\Models\ParentSchool;
 use App\Models\Student;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\_CONST;
 
 class ParentSchoolController extends Controller
 {
     // 
     public function allParentSchools() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -39,7 +40,7 @@ class ParentSchoolController extends Controller
     // create & update employee
     public function createParentSchool() {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -59,7 +60,7 @@ class ParentSchoolController extends Controller
 
     public function storeParentSchool(Request $request) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -126,7 +127,7 @@ class ParentSchoolController extends Controller
 
     public function updateParentSchool($id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -151,7 +152,7 @@ class ParentSchoolController extends Controller
 
     public function storeUpdateParentSchool(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -211,7 +212,7 @@ class ParentSchoolController extends Controller
 
     public function destroy(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != 1 && $user->role_id != 2)) {
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

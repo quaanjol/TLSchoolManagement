@@ -113,4 +113,25 @@ Route::group(['middleware' => 'auth'], function () {
 
     // course
     Route::get('/student/course/all', 'App\Http\Controllers\Student\CourseController@show')->name('student.course.all');
+    Route::get('/student/course/registered/all', 'App\Http\Controllers\Student\CourseController@registeredCourses')->name('student.course.registered.all');
+    Route::get('/student/course/register/{id}', 'App\Http\Controllers\Student\CourseController@register')->name('student.course.register');
+
+
+
+
+
+    // <= teacher =>
+    // Route::get('/teacher/dashboard', 'App\Http\Controllers\Student\TeacherController@show')->name('teacher.dashboard');
+    // Route::get('/theme/{color}', 'App\Http\Controllers\AdminController@changeTheme')->name('theme.change');
+    // Route::get('/teacher/profile', 'App\Http\Controllers\Student\TeacherController@profile')->name('teacher.profile');
+    // Route::post('/teacher/profile', 'App\Http\Controllers\Student\TeacherController@profileStore')->name('teacher.profile.store');
+
+
+    // // subject
+    // Route::get('/student/teacher/all', 'App\Http\Controllers\Teacher\SubjectController@show')->name('teacher.subject.all');
+
+    // // course
+    // Route::get('/teacher/course/all', 'App\Http\Controllers\Teacher\CourseController@show')->name('teacher.course.all');
+    // Route::get('/teacher/course/{slug}-{id}', 'App\Http\Controllers\Teacher\CourseController@registeredCourses')->name('teacher.course.view');
+    
 });
