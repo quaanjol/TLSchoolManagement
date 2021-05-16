@@ -62,6 +62,20 @@ class CourseController extends Controller
 
         $course = Course::find($id);
 
+        $allStudents = Student::all();
+        $registeredStudents = [];
+        foreach($allStudents as $student) {
+            if(checkRegisteredCourse($id) == true) {
+                $registeredStudents[] = $student;
+            }
+        }
+
+        if(count($registeredStudents) >= $course->quantity) {
+                $noti = 'Khoá học không đuợc đăng kí vì đã đủ sinh viên.';
+                $request->session()->flash('danger', $noti);
+                return redirect('student/course/all');
+        }
+
         if($course == null) {
             $noti = 'Khoá học không tồn tại.';
             $request->session()->flash('danger', $noti);
@@ -70,7 +84,7 @@ class CourseController extends Controller
             $student = $user->Student;
 
             if($course->Subject->checkStudent($student->department_id) == false) {
-                $noti = 'Khoá học không không đuợc đăng kí vì khác khoa.';
+                $noti = 'Khoá học không đuợc đăng kí vì khác khoa.';
                 $request->session()->flash('danger', $noti);
                 return redirect('student/course/all');
             }

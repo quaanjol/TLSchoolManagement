@@ -1,7 +1,7 @@
-@extends('student.layouts.master')
+@extends('teacher.layouts.master')
 
 @section('title')
-Tất cả khoá học
+Quản lý khoá học
 @endsection
 
 @section('style')
@@ -15,7 +15,7 @@ Tất cả khoá học
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.course.create') }}"><button class="btn btn-primary mb-3">
+    <a href=""><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
         
@@ -23,11 +23,11 @@ Tất cả khoá học
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            Tất cả khoá học
+            {{ $course->name }}
             </h6>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+        <div class="table-responsive">
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@ Tất cả khoá học
                                 Thông tin
                             </th>
                             <th scope="col">
-                                Trạng thái
+                                Chuyên cần
                             </th>
                             <th scope="col">
                                 Điểm
@@ -47,39 +47,33 @@ Tất cả khoá học
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($courses as $course)
+                        @foreach($students as $student)
                             <tr>
                                 <th scope="col">
                                     {{$loop->iteration}}
                                 </th>
                                 <th>
-                                    <a href="">{{ $course->name }}</a>
+                                    {{ $student->name }}
                                 </th>
                                 <th>
                                     <ul class="custom-ul">
-                                        <li>
-                                            Môn học: {{ $course->Subject->name }}
+                                        <li>Email: {{ $student->email }}</li>
+                                        <li>SĐTT: {{ $student->phone }}</li>
+                                        <li>Địa chỉ: {{ $student->address }}</li>
+                                        <li>Giới tính: 
+                                        @if($student->gender == 1)
+                                        Nam
+                                        @elseif($student->gender == 2)
+                                        Nữ
+                                        @else
+                                        Khác
+                                        @endif
                                         </li>
-                                        <li>
-                                            Giảng viên: {{ $course->Employee->name }}
-                                        </li>
-                                        <li>
-                                            Bắt đầu: {{ $course->start }}
-                                        </li>
-                                        <li>
-                                            Số lượng sinh viên: {{ $course->quantity }}
-                                        </li>
-                                        <li>
-                                            Kết thúc: {{ $course->end }}
-                                        </li>   
+                                        <li>Ngành: {{ $student->Department->name }}</li>
                                     </ul>
                                 </th>
                                 <th>
-                                    @if($course->status == 1)
-                                    <span class="badge badge-success">Processing</span>
-                                    @else 
-                                    <span class="badge badge-danger">Finish</span>
-                                    @endif
+                                    
                                 </th>
                                 <th>
                                     
@@ -88,10 +82,6 @@ Tất cả khoá học
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            
-            <div class="d-flex justify-content-center">
-                {{ $courses->links() }}
             </div>
         </div>
         

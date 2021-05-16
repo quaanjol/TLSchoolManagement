@@ -1,4 +1,4 @@
-@extends('student.layouts.master')
+@extends('teacher.layouts.master')
 
 @section('title')
 Tất cả môn học
@@ -15,9 +15,6 @@ Tất cả môn học
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.subject.create') }}"><button class="btn btn-primary mb-3">
-    Tạo mới
-    </button></a>
         
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

@@ -24,7 +24,7 @@ class SubjectController extends Controller
         $employee = $user->Employee;
 
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Tất cả sinh viên", "english" => "Dashboard"];
+        $heading = ["vietnamese" => "Tất cả môn học", "english" => "Dashboard"];
         $subjects = Subject::orderBy('id', 'DESC')->paginate(6);
 
         foreach($subjects as $subject) {

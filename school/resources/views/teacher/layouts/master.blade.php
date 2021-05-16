@@ -28,7 +28,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-{{$student->User->theme}} sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-{{$teacher->User->theme}} sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ Route('admin.dashboard') }}">
@@ -44,7 +44,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item side-bar-item active" id="dashboardLi">
-            <a class="nav-link" href="{{ Route('admin.dashboard') }}">
+            <a class="nav-link" href="{{ Route('teacher.dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 Tổng quan
             </a>
@@ -55,50 +55,8 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Thông tin
-        </div>
-
-        <li class="nav-item side-bar-item" id="teacherLi">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTeacher" aria-expanded="true" aria-controls="collapseTeacher">
-            <i class="fas fa-chalkboard-teacher"></i>
-                Giảng viên
-            </a>
-            <div id="collapseTeacher" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">
-                    Thao tác:
-                    </h6>
-                    <a class="collapse-item" href="{{ route('student.teacher.all') }}">
-                    Hiển thị tất cả
-                </div>
-            </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
             Quản lí học tập
         </div>
-
-        <!-- Nav Item - Department Menu -->
-        <li class="nav-item side-bar-item" id="departmentLi">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDepartment" aria-expanded="true" aria-controls="collapseDepartment">
-            <i class="fas fa-building"></i>
-                Khoa
-            </a>
-            <div id="collapseDepartment" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">
-                    Thao tác:
-                    </h6>
-                    <a class="collapse-item" href="{{ route('student.department.all') }}">
-                    Hiển thị tất cả
-                    </a>
-                </div>
-            </div>
-        </li>
 
         <!-- Nav Item - Subject Menu -->
         <li class="nav-item side-bar-item" id="subjectLi">
@@ -111,7 +69,7 @@
                     <h6 class="collapse-header">
                     Thao tác:
                     </h6>
-                    <a class="collapse-item" href="{{ route('student.subject.all') }}">
+                    <a class="collapse-item" href="{{ route('teacher.subject.all') }}">
                     Hiển thị tất cả
                     </a>
                 </div>
@@ -129,11 +87,8 @@
                     <h6 class="collapse-header">
                     Thao tác:
                     </h6>
-                    <a class="collapse-item" href="{{ route('student.course.all') }}">
+                    <a class="collapse-item" href="{{ route('teacher.course.all') }}">
                     Khoá học hiện tại
-                    </a>
-                    <a class="collapse-item" href="{{ route('student.course.registered.all') }}">
-                    Khoá học đăng kí
                     </a>
                 </div>
             </div>
@@ -215,8 +170,12 @@
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $student->name }}</span>
-                    <img class="img-profile rounded-circle" src="{{ $student->img }}" style="object-fit: cover;">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $teacher->name }}</span>
+                    @if(strpos("http", $teacher->img) == false)
+                    <img class="img-profile rounded-circle" src="{{ URL::asset($teacher->img) }}" style="object-fit: cover;">
+                    @else
+                    <img src="https://i.imgur.com/jJ4Iy9p.png" alt="" width="50px" style="border-radius: 50%;">
+                    @endif
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

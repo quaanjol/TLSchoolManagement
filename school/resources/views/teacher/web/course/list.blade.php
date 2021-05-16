@@ -1,4 +1,4 @@
-@extends('student.layouts.master')
+@extends('teacher.layouts.master')
 
 @section('title')
 Tất cả khoá học
@@ -15,9 +15,6 @@ Tất cả khoá học
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.course.create') }}"><button class="btn btn-primary mb-3">
-    Tạo mới
-    </button></a>
         
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -42,7 +39,7 @@ Tất cả khoá học
                                 Trạng thái
                             </th>
                             <th scope="col">
-                                Đăng kí
+                                Quản lý
                             </th>
                         </tr>
                     </thead>
@@ -82,12 +79,16 @@ Tất cả khoá học
                                     @endif
                                 </th>
                                 <th>
-                                    @if($student->checkRegisteredCourse($course->id))
-                                    <button class="btn btn-primary" disabled="true">Đã đăng kí</button>
-                                    @else
-                                    <a href="{{ route('student.course.register', ['id' => $course->id]) }}">
-                                        <button class="btn btn-danger" <?php if($course->Subject->checkStudent($student->department_id) == false) {?>disabled="true"<?php } ?>>Đăng kí</button>
+                                    @if($course->teacher_id == $teacher->id)
+                                    <a href="{{ route('teacher.course.manage', ['id' => $course->id, 'slug' => Str::slug($course->name)]) }}">
+                                        <button class="btn btn-warning">
+                                            <i class="fas fa-tasks"></i>
+                                        </button>
                                     </a>
+                                    @else
+                                    <button class="btn btn-warning" disabled="true">
+                                            <i class="fas fa-tasks"></i>
+                                    </button>
                                     @endif
                                 </th>
                             </tr>

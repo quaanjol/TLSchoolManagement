@@ -16,33 +16,30 @@ use App\Models\Post;
 use App\Models\Attendance;
 use App\Models\FinalGrade;
 use App\Models\Grade;
+use App\Http\Controllers\_CONST;
 
 class TeacherController extends Controller
 {
     // show
     public function show() {
         $user = auth()->user();
-        if($user == null || $user->role_id != 3) {
+        if($user == null || $user->role_id != _CONST::TEACHER_ROLE_ID) {
             return redirect('/login');
         }
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tổng quan", "english" => "Dashboard"];
-        $student = $user->student;
+        $teacher = $user->Employee;
 
         // get dashboard information
-        $departments = Department::all();
-        $teachers = Employee::where('type', '=', 'teacher')->get();
         $subjects = Subject::all();
         $courses = Course::all();
 
-        return view('student.web.dashboard')->with([
+        return view('teacher.web.dashboard')->with([
             'user' => $user,
             'theme' => $theme,
             'heading' => $heading,
-            'student' => $student,
-            'departments' => $departments,
-            'teachers' => $teachers,
+            'teacher' => $teacher,
             'subjects' => $subjects,
             'courses' => $courses,
         ]);

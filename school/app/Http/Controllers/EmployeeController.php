@@ -323,7 +323,7 @@ class EmployeeController extends Controller
         $newUser->name = $eName;
 
         // define this user as a teacher
-        $newUser->role_id = 2;
+        $newUser->role_id = 3;
         $newUser->username = $eName . $dob;
         $newUser->title = $title;
         $newUser->email = $email;

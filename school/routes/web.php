@@ -121,17 +121,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     // <= teacher =>
-    // Route::get('/teacher/dashboard', 'App\Http\Controllers\Student\TeacherController@show')->name('teacher.dashboard');
-    // Route::get('/theme/{color}', 'App\Http\Controllers\AdminController@changeTheme')->name('theme.change');
-    // Route::get('/teacher/profile', 'App\Http\Controllers\Student\TeacherController@profile')->name('teacher.profile');
-    // Route::post('/teacher/profile', 'App\Http\Controllers\Student\TeacherController@profileStore')->name('teacher.profile.store');
+    Route::get('/teacher/dashboard', 'App\Http\Controllers\Teacher\TeacherController@show')->name('teacher.dashboard');
+    Route::get('/theme/{color}', 'App\Http\Controllers\AdminController@changeTheme')->name('theme.change');
+    Route::get('/teacher/profile', 'App\Http\Controllers\Teacher\TeacherController@profile')->name('teacher.profile');
+    Route::post('/teacher/profile', 'App\Http\Controllers\Teacher\TeacherController@profileStore')->name('teacher.profile.store');
 
 
-    // // subject
-    // Route::get('/student/teacher/all', 'App\Http\Controllers\Teacher\SubjectController@show')->name('teacher.subject.all');
+    // subject
+    Route::get('/teacher/subject/all', 'App\Http\Controllers\Teacher\SubjectController@show')->name('teacher.subject.all');
 
-    // // course
-    // Route::get('/teacher/course/all', 'App\Http\Controllers\Teacher\CourseController@show')->name('teacher.course.all');
-    // Route::get('/teacher/course/{slug}-{id}', 'App\Http\Controllers\Teacher\CourseController@registeredCourses')->name('teacher.course.view');
+    // course
+    Route::get('/teacher/course/all', 'App\Http\Controllers\Teacher\CourseController@show')->name('teacher.course.all');
+    Route::get('/teacher/course/manage/{id}/{slug}', 'App\Http\Controllers\Teacher\CourseController@manage')->name('teacher.course.manage');
     
 });
