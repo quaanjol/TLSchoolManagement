@@ -79,7 +79,7 @@ Tất cả khoá học
                                     @endif
                                 </th>
                                 <th>
-                                    @if($course->teacher_id == $teacher->id)
+                                    @if($course->employee_id == $teacher->id)
                                     <a href="{{ route('teacher.course.manage', ['id' => $course->id, 'slug' => Str::slug($course->name)]) }}">
                                         <button class="btn btn-warning">
                                             <i class="fas fa-tasks"></i>

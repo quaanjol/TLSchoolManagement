@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Attendance;
 
 class Student extends Model
 {
@@ -25,13 +26,17 @@ class Student extends Model
         return $this->belongsTo('App\Models\ParentSchool');
     }
 
-    // has many final grades, grades
+    // has many final grades, grades, attendances
     public function FinalGrades() {
         return $this->hasMany('App\Models\FinalGrade');
     }
 
     public function Grades() {
         return $this->hasMany('App\Models\Grade');
+    }
+
+    public function Attendances() {
+        return $this->hasMany('App\Models\Attendance');
     }
 
     // has one gpa
@@ -49,5 +54,49 @@ class Student extends Model
                 return true;
             }
         }
+    }
+
+    // get course's attendancess
+    public function getCourseAttendances($courseId) {
+        $attendances = Attendance::where([
+            ['course_id', '=', $courseId],
+            ['student_id', '=', $this->id]
+        ])->get();
+        return $attendances;
+    }
+
+    public function getCourseAttendancesAbsence($courseId) {
+        $attendances = Attendance::where([
+            ['course_id', '=', $courseId],
+            ['student_id', '=', $this->id],
+            ['absence', '=', 1]
+        ])->get();
+        return $attendances;
+    }
+
+    public function getCourseAttendancesNotAbsence($courseId) {
+        $attendances = Attendance::where([
+            ['course_id', '=', $courseId],
+            ['student_id', '=', $this->id],
+            ['absence', '=', 0]
+        ])->get();
+        return $attendances;
+    }
+
+    // get mid term grade
+    public function getMidTermGrade($id, $student_id) {
+        return Grade::where([
+            ['course_id', '=', $id],
+            ['student_id', '=', $student_id],
+            ['name', '=', 'Giữa kì']
+        ])->limit(1)->get();
+    }
+
+    public function getLastTermGrade($id, $student_id) {
+        return Grade::where([
+            ['course_id', '=', $id],
+            ['student_id', '=', $student_id],
+            ['name', '=', 'Cuối kì']
+        ])->limit(1)->get();
     }
 }

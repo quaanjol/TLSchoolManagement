@@ -133,5 +133,7 @@ Route::group(['middleware' => 'auth'], function () {
     // course
     Route::get('/teacher/course/all', 'App\Http\Controllers\Teacher\CourseController@show')->name('teacher.course.all');
     Route::get('/teacher/course/manage/{id}/{slug}', 'App\Http\Controllers\Teacher\CourseController@manage')->name('teacher.course.manage');
+    Route::post('/teacher/course/checkAttendance/{id}', 'App\Http\Controllers\Teacher\CourseController@checkAttendance')->name('teacher.course.checkAttendance');
+    Route::post('/teacher/course/addGrade/{id}', 'App\Http\Controllers\Teacher\CourseController@addGrade')->name('teacher.course.addGrade');
     
 });
