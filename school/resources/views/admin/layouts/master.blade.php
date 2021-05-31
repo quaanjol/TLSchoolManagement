@@ -234,10 +234,10 @@
                     <h6 class="collapse-header">
                     Thao tác:
                     </h6>
-                    <a class="collapse-item" href="">
+                    <a class="collapse-item" href="{{ route('admin.category.all') }}">
                     Hiển thị tất cả
                     </a>
-                    <a class="collapse-item" href="">
+                    <a class="collapse-item" href="{{ route('admin.category.create') }}">
                     Tạo mới
                     </a>
                 </div>

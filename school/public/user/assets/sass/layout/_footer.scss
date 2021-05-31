@@ -1,0 +1,107 @@
+
+.viva__footer {
+    border-top: 1px solid rgb(141 149 153 / 25%);
+    .viva__footer__top {
+        padding: 80px 0 50px 0;
+        @include mobile {
+            padding: 40px 0;
+        }
+        .viva__footer__top__wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            @include mobile {
+                display: block;
+            }
+            .viva__footer__logo {
+                width: 15%;
+            }
+            .mn-ft {
+                margin-left: 5%;
+                width: 80%;
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    li {
+                        list-style: none;
+                        padding: 8px 0;
+                        a {
+                            color: #8d9599;
+                        }
+                    }
+                }
+                > ul {
+                    display: flex;
+                    justify-content: space-between;
+                    @include mobile {
+                        display: block;
+                    }
+                    > li {
+                        >a {
+                            font-weight: bold;
+                        }
+                        &:first-child {
+                            display: none;
+                        }
+                        >ul {
+                            >li {
+                                a {
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+    .viva__footer__bottom {
+        background: $n-dark;
+        padding: 22px  0;
+        .viva__footer__bottom__wrap {
+            ul {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                li {
+                    list-style: none;
+                    border-right: 1px solid #899296;
+                    &:last-child {
+                        border-right: none;
+                    }
+                    a {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: $n-gray;
+                        line-height: 22px;
+                        display: inline-block;
+                        padding: 0 16px;
+                        @include mobile {
+                            font-size: 12px;
+                            padding: 0 4px;
+                        }
+                    }
+                    &:first-child {
+                        a {
+                            padding-left: 0;
+                        }
+                    }
+                    &:last-child {
+                        a {
+                            padding-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @include mobile {
+        .-footer-distance {
+            margin-bottom: 32px;
+        }
+    }
+}
+
+

@@ -1,0 +1,61 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+
+// config variables height
+$h-carosel: 768px;
+
+
+// config for font-size
+$fs-10: 10px;
+$fs-12: 12px;
+$fs-14: 14px;
+$fs-16: 16px;
+$fs-18: 18px;
+$fs-20: 20px;
+$fs-22: 22px;
+$fs-24: 24px;
+$fs-32: 32px;
+
+// config for font-weight
+//-----font-weight-------------
+
+// config for line-height
+//-------line-height-----------
+$line-h-14: 14px;
+$line-h-16: 16px;
+$line-h-22: 22px;
+$line-h-26: 26px;
+$line-h-28: 28px;
+$line-h-30: 30px;
+$line-h-32: 32px;
+$line-h-40: 40px;
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1200px !default;
+
+//---------- Colors ----------
+
+// c : Primary colors (Brand);
+// g : Gradient colors;
+// s : Semantic colors;
+// n : Neutral colors;
+
+$n-blue:#0193CF;
+$n-yellow:#C2D72F;
+$n-green:#2CD1A0;
+
+$n-black:#222222;
+$n-dark:#39474D;
+$n-gray: #8D9599;
+$n-smoke:#FAFAFA;
+$n-white:#FFFFFF;
+
+// config for responsive
+//media responsive
+$mobile-smail-width:320px;
+$mobile-width: 480px;
+$tablet-width: 768px;
+$desktop-width: 1024px;

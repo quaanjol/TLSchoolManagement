@@ -1,0 +1,29 @@
+/* 
+    @ Use for css class used for the general page
+    @ 
+    @ update date : 29/03/2021
+    @ By : duongbien (duongbien1996@gmail.com)
+*/
+
+
+// handler banner-carousel all page
+
+.wrap-title {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    .t-title {
+        font-size: 48px;
+        line-height: 58px;
+        font-weight: 500;
+        color: $n-white;
+        text-align: center;
+        @include mobile {
+            font-size: 24px;
+            line-height: 48px;
+        }
+    }
+}

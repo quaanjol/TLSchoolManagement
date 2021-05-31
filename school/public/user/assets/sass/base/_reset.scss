@@ -1,0 +1,46 @@
+
+// Cấu hình scroll body
+body::-webkit-scrollbar {
+    width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+    background: #a4b0be;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: $n-blue;
+}
+body::-webkit-scrollbar-thumb:window-inactive {
+    background: #a4b0be;
+}
+
+// Cấu hình font
+body {
+    // font-family: 'SourceHanSansCN' !important;
+    color: $n-black !important;
+    background-color: #fff !important;
+    @media (min-width: 1260px) {
+        .container {
+            max-width: 1260px;
+        }
+    }
+}
+body:lang(zh-CN) {
+    font-family: 'SourceHanSansCN' !important;
+}
+body:lang(en-US) {
+    font-family: 'VivaEN' !important;
+}
+html {
+    font-size: 100%;
+}
+
+// clear
+textarea:focus, input:focus,.btn:focus,.btn.focus{
+    outline: none;
+    box-shadow: none;
+}
+
+// reset thuộc tính thẻ a
+a {
+    text-decoration: none !important;
+}

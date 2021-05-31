@@ -13,13 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'App\Http\Controllers\User\UserController@show')->name('index');
+Route::get('/home', 'App\Http\Controllers\User\UserController@show')->name('home');
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes(['register' => false]);
 
 Route::get('/redirect', [App\Http\Controllers\HomeController::class, 'index'])->name('redirect');
 
@@ -94,6 +91,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/course/update/{id}', 'App\Http\Controllers\CourseController@update')->name('admin.course.update');
     Route::post('admin/course/update/{id}', 'App\Http\Controllers\CourseController@storeUpdate')->name('admin.course.storeUpdate');
     Route::get('admin/course/view/{id}', 'App\Http\Controllers\CourseController@view')->name('admin.course.view');
+
+    // post categiries
+    Route::get('admin/post-category/all', 'App\Http\Controllers\PostCategoryController@all')->name('admin.category.all');
+    Route::get('admin/post-category/create', 'App\Http\Controllers\PostCategoryController@create')->name('admin.category.create');
+    Route::post('admin/post-category/create', 'App\Http\Controllers\PostCategoryController@store')->name('admin.category.store');
+    Route::get('admin/post-category/update/{id}', 'App\Http\Controllers\PostCategoryController@update')->name('admin.category.update');
+    Route::post('admin/post-category/update/{id}', 'App\Http\Controllers\PostCategoryController@storeUpdate')->name('admin.category.storeUpdate');
+    
 
 
     // <= student =>
