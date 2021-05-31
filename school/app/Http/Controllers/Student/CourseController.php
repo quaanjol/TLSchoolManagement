@@ -20,6 +20,7 @@ class CourseController extends Controller
 
         $theme = $user->theme;
         $heading = ["vietnamese" => "Tất cả khoá học", "english" => "Dashboard"];
+        // damn
 
         $todayDate = date('Y-m-d');
         $courses = Course::orderBy('id', 'DESC')->whereDate('start', '>', $todayDate)->paginate(6);
