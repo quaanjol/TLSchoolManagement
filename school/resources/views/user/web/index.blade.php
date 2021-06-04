@@ -11,6 +11,7 @@ Trang chủ
         <p class="title">Tin Tức</p>
         <div class="swiper-container swiper-container-js box-new">
             <div class="swiper-wrapper">
+                @foreach($newss as $news)
                 <div class="item-columns swiper-slide">
                     <div>
                         <div class="views-field views-field-nothing">
@@ -19,85 +20,32 @@ Trang chủ
                                     <div class="post-image ">
                                         <figure>
                                             <a href="#" hreflang="vi">
-                                                <img src="{{ URL::asset('user/image/baaucu.jpeg') }}" alt="" typeof="Image">
+                                                <img src="{{ URL::asset($news->img) }}" alt="" typeof="Image">
                                             </a>
                                         </figure>
                                     </div>
                                     <div class="post-content">
                                         <div class="post-title">
-                                            <a href="#" hreflang="vi">Sinh viên Thành phố tìm hiểu luật bầu cử đại biểu Quốc hội và đại biểu Hội đồng nhân dân</a>
+                                            <a href="#" hreflang="vi">{{ $news->title }}
                                         </div>
                                         <div class="post-meta">
-                                                                                        <span class="post-categories">
-                                                                                            <a href="/index.php/tin-tuc/doan-the" hreflang="vi">Đoàn thể</a>
-                                                                                        </span>&nbsp;|&nbsp;
-                                            <span class="post-created">13/05/2021 </span>
+                                            <span class="post-categories">
+                                                <a href="/index.php/tin-tuc/doan-the" hreflang="vi">
+                                                    {{ $news->PostCategory->name }}
+                                                </a>
+                                            </span>&nbsp;|&nbsp;
+                                            <span class="post-created">
+                                                {{date('d/m/Y', strtotime($news->created_at))}}
+                                            </span>
                                         </div>
-                                        <div class="post-sum"> 24 đội thi đến từ các trường đại học, cao đẳng trên địa bàn Thành phố tham gia. </div>
+                                        <!-- <div class="post-sum">{!!Str::words($news->description, 15)!!}</div> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item-columns swiper-slide">
-                    <div>
-                        <div class="views-field views-field-nothing">
-                            <div class="field-content">
-                                <div class="post-block hover01">
-                                    <div class="post-image ">
-                                        <figure>
-                                            <a href="#" hreflang="vi">
-                                                <img src="{{ URl::asset('user/image/baaucu.jpeg') }}" alt="" typeof="Image">
-                                            </a>
-                                        </figure>
-                                    </div>
-                                    <div class="post-content">
-                                        <div class="post-title">
-                                            <a href="#" hreflang="vi">Sinh viên Thành phố tìm hiểu luật bầu cử đại biểu Quốc hội và đại biểu Hội đồng nhân dân</a>
-                                        </div>
-                                        <div class="post-meta">
-                                                                                        <span class="post-categories">
-                                                                                            <a href="/index.php/tin-tuc/doan-the" hreflang="vi">Đoàn thể</a>
-                                                                                        </span>&nbsp;|&nbsp;
-                                            <span class="post-created">13/05/2021 </span>
-                                        </div>
-                                        <div class="post-sum"> 24 đội thi đến từ các trường đại học, cao đẳng trên địa bàn Thành phố tham gia. </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-columns swiper-slide">
-                    <div>
-                        <div class="views-field views-field-nothing">
-                            <div class="field-content">
-                                <div class="post-block hover01">
-                                    <div class="post-image ">
-                                        <figure>
-                                            <a href="#" hreflang="vi">
-                                                <img src="{{ URl::asset('user/image/baaucu.jpeg') }}" alt="" typeof="Image">
-                                            </a>
-                                        </figure>
-                                    </div>
-                                    <div class="post-content">
-                                        <div class="post-title">
-                                            <a href="#" hreflang="vi">Sinh viên Thành phố tìm hiểu luật bầu cử đại biểu Quốc hội và đại biểu Hội đồng nhân dân</a>
-                                        </div>
-                                        <div class="post-meta">
-                                                                                        <span class="post-categories">
-                                                                                            <a href="/index.php/tin-tuc/doan-the" hreflang="vi">Đoàn thể</a>
-                                                                                        </span>&nbsp;|&nbsp;
-                                            <span class="post-created">13/05/2021 </span>
-                                        </div>
-                                        <div class="post-sum"> 24 đội thi đến từ các trường đại học, cao đẳng trên địa bàn Thành phố tham gia. </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
         <div class="more">
@@ -109,76 +57,50 @@ Trang chủ
 <div class="section-event">
     <div class="container event">
         <p class="title">Sự Kiện</p>
+        @foreach($events as $event)
         <div class="item-columns">
             <div>
                 <!-- Start Display article for teaser page -->
-                
                     <article class="node node-detail node--type-event node--promoted node--view-mode-teaser clearfix">
                         <div class="event-block">
                             <div class="event-image">
                                 <div class="field field--name-field-event-image field--type-image field--label-hidden field__item">  
                                     <a href="#">
-                                        <img src="{{ URl::asset('user/image/event2021.jpeg') }}" alt="">
+                                        <img src="{{ URl::asset($event->img) }}" alt="">
                                     </a>
                                 </div>
                             
                                 <div class="date"> 
-                                    <span class="icon"><i class="gv-icon-1103"></i></span><span class="day">14</span> - <span class="month"> Tháng 5 </span>
+                                    <span class="icon"><i class="gv-icon-1103"></i></span>
+                                    <span class="day">
+                                        @if($event->event_date != null)
+                                        {{date('d/m/Y', strtotime($news->event_date))}}
+                                        @else
+                                        n/a
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                             <div class="event-content">  
                                 <div class="event-info">
                                     <div class="title-event">
                                         <a href="#">
-                                            <span>Ngày hội việc làm Đại học Tôn Đức Thắng 2021</span>
+                                            <span>{{ $event->title }}</span>
                                         </a>
                                     </div>
-                                    <div class="body">
+                                    <!-- <div class="body">
                                         <div class="field field--name-body field--type-text-with-summary field--label-hidden field__item">Có 50 doanh nghiệp và khoảng hơn 5.000 sinh viên mới tốt nghiệp và sinh viên năm cuối của TDTU tham dự chương trình.</div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>  
                         </div>   
                     </article>  
                 
                 <!-- End Display article for teaser page -->
-                </div>
+            </div>
         </div>
-        <div class="item-columns">
-            <div>
-                <!-- Start Display article for teaser page -->
-                
-                    <article class="node node-detail node--type-event node--promoted node--view-mode-teaser clearfix">
-                        <div class="event-block">
-                            <div class="event-image">
-                                <div class="field field--name-field-event-image field--type-image field--label-hidden field__item">  
-                                    <a href="#">
-                                        <img src="{{ URl::asset('user/image/event2021.jpeg') }}" alt="">
-                                    </a>
-                                </div>
-                            
-                                <div class="date"> 
-                                    <span class="icon"><i class="gv-icon-1103"></i></span><span class="day">14</span> - <span class="month"> Tháng 5 </span>
-                                </div>
-                            </div>
-                            <div class="event-content">  
-                                <div class="event-info">
-                                    <div class="title-event">
-                                        <a href="#">
-                                            <span>Ngày hội việc làm Đại học Tôn Đức Thắng 2021</span>
-                                        </a>
-                                    </div>
-                                    <div class="body">
-                                        <div class="field field--name-body field--type-text-with-summary field--label-hidden field__item">Có 50 doanh nghiệp và khoảng hơn 5.000 sinh viên mới tốt nghiệp và sinh viên năm cuối của TDTU tham dự chương trình.</div>
-                                    </div>
-                                </div>
-                            </div>  
-                        </div>   
-                    </article>  
-                
-                <!-- End Display article for teaser page -->
-                </div>
-        </div>
+        @endforeach
+        
         <div class="item-columns">
             <div>
                 <!-- Start Display article for teaser page -->
@@ -186,79 +108,29 @@ Trang chủ
                 <div class="item-list">
 
                     <ul>
+                        @foreach($events as $event)
                         <li class="view-list-item">
                             <div class="views-field views-field-nothing">
                                 <div class="field-content">
                                     <div class="event-block-list">
                                         <div class="event-date">
-                                            <span class="day">20</span>
-                                            <span class="month">Tháng 1</span>
+                                            <span class="day">
+                                                {{date('d', strtotime($event->event_date))}}
+                                            </span>
+                                            <span class="month">Tháng 
+                                                {{date('m', strtotime($event->event_date))}}
+                                            </span>
                                         </div>
                                         <div class="event-content">
                                             <div class="event-title">
-                                                <a href="#" hreflang="vi">Bright technical careers – Are you ready?</a>
+                                                <a href="#" hreflang="vi">{{ $event->title }}</a>
                                             </div>
                                         </div>  
                                     </div>
                                 </div>
                             </div>
                         </li>
-
-                        <li class="view-list-item">
-                            <div class="views-field views-field-nothing">
-                                <div class="field-content">
-                                    <div class="event-block-list">
-                                        <div class="event-date">
-                                            <span class="day">20</span>
-                                            <span class="month">Tháng 1</span>
-                                        </div>
-                                        <div class="event-content">
-                                            <div class="event-title">
-                                                <a href="#" hreflang="vi">Bright technical careers – Are you ready?</a>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="view-list-item">
-                            <div class="views-field views-field-nothing">
-                                <div class="field-content">
-                                    <div class="event-block-list">
-                                        <div class="event-date">
-                                            <span class="day">20</span>
-                                            <span class="month">Tháng 1</span>
-                                        </div>
-                                        <div class="event-content">
-                                            <div class="event-title">
-                                                <a href="#" hreflang="vi">Bright technical careers – Are you ready?</a>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="view-list-item">
-                            <div class="views-field views-field-nothing">
-                                <div class="field-content">
-                                    <div class="event-block-list">
-                                        <div class="event-date">
-                                            <span class="day">20</span>
-                                            <span class="month">Tháng 1</span>
-                                        </div>
-                                        <div class="event-content">
-                                            <div class="event-title">
-                                                <a href="#" hreflang="vi">Bright technical careers – Are you ready?</a>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                            
-                        
+                        @endforeach                            
                     </ul>
                     
                     </div>

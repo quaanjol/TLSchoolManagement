@@ -42,7 +42,7 @@ class PostCategoryController extends Controller
     }
 
     // create & update employee
-    public function createDepartment() {
+    public function create() {
         $user = auth()->user();
         if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
@@ -50,9 +50,9 @@ class PostCategoryController extends Controller
 
         $employee = $user->Employee;
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Tạo mới khoa", "english" => "Dashboard"];
+        $heading = ["vietnamese" => "Tạo mới thể loại", "english" => "Dashboard"];
 
-        return view('admin.web.department.create')->with([
+        return view('admin.web.postCategory.create')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
@@ -60,7 +60,7 @@ class PostCategoryController extends Controller
         ]);
     }
 
-    public function storeDepartment(Request $request) {
+    public function store(Request $request) {
         $user = auth()->user();
         if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
@@ -69,80 +69,90 @@ class PostCategoryController extends Controller
         $eName = $request->name;
         $description = $request->description;
 
-        $department = new Department();
-        $department->name = $eName;
-        $department->description = $description;
+        $category = new PostCategory();
+        $category->name = $eName;
+        $category->description = $description;
         
-        $department->save();
+        $category->save();
 
         $noti = 'Thêm thành công.';
         $request->session()->flash('success', $noti);
-        return redirect('admin/department/all');
+        return redirect('admin/post-category/all');
     }
 
-    public function updateDepartment($id) {
+    public function update($id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
         $employee = $user->Employee;
-        $department = Department::find($id);
+        $category = PostCategory::find($id);
+        if($category == null) {
+            $noti = 'Lỗi. Thể loại không tồn lại';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back();
+        }
         $theme = $user->theme;
-        $heading = ["vietnamese" => "Chỉnh sửa sinh viên", "english" => "Dashboard"];
+        $heading = ["vietnamese" => "Chỉnh sửa thể loại", "english" => "Dashboard"];
         
-        return view('admin.web.department.update')->with([
+        return view('admin.web.postCategory.update')->with([
             'user' => $user,
             'theme' => $theme,
             'employee' => $employee,
             'heading' => $heading,
-            'department' => $department
+            'category' => $category
         ]);
     }
 
-    public function storeUpdateDepartment(Request $request, $id) {
+    public function storeUpdate(Request $request, $id) {
         $user = auth()->user();
         if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
-        $department = Department::find($id);
+        $category = PostCategory::find($id);
+        if($category == null) {
+            $noti = 'Lỗi. Thể loại không tồn lại';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back();
+        }
 
         $eName = $request->name;
         $description = $request->description;
 
-        $department->name = $eName;
-        $department->description = $description;
+        $category->name = $eName;
+        $category->description = $description;
         
-        $department->save();
+        $category->save();
 
         $noti = 'Chỉnh sửa thành công.';
         $request->session()->flash('success', $noti);
-        return redirect('admin/department/all');
+        return redirect('admin/post-category/all');
     }
 
-    public function destroy(Request $request, $id) {
-        $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
-            return redirect('/login');
-        }
+    // public function destroy(Request $request, $id) {
+    //     $user = auth()->user();
+    //     if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
+    //         return redirect('/login');
+    //     }
 
-        $department = department::find($id);
-        if($department != null) {
-            if($department->Students->count() != 0 || $department->Employees->count() != 0) {
-                $noti = 'Xoá không thành công do vẫn còn sinh viên hoặc nhân viên trực thuộc khoa.';
-                $request->session()->flash('danger', $noti);
-                return redirect('/admin/department/all');
-            } else {
-                $department->delete();
-                $noti = 'Xoá thành công.';
-                $request->session()->flash('success', $noti);
-                return redirect('/admin/department/all');
-            }
-        } else {
-            $noti = 'Xoá không thành công.';
-            $request->session()->flash('danger', $noti);
-            return redirect('/admin/department/all');
-        }
-    }
+    //     $department = department::find($id);
+    //     if($department != null) {
+    //         if($department->Students->count() != 0 || $department->Employees->count() != 0) {
+    //             $noti = 'Xoá không thành công do vẫn còn sinh viên hoặc nhân viên trực thuộc khoa.';
+    //             $request->session()->flash('danger', $noti);
+    //             return redirect('/admin/department/all');
+    //         } else {
+    //             $department->delete();
+    //             $noti = 'Xoá thành công.';
+    //             $request->session()->flash('success', $noti);
+    //             return redirect('/admin/department/all');
+    //         }
+    //     } else {
+    //         $noti = 'Xoá không thành công.';
+    //         $request->session()->flash('danger', $noti);
+    //         return redirect('/admin/department/all');
+    //     }
+    // }
 }

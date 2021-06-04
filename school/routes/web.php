@@ -69,6 +69,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/student/create', 'App\Http\Controllers\StudentController@storeStudent')->name('admin.student.store');
     Route::get('admin/student/update/{id}', 'App\Http\Controllers\StudentController@updateStudent')->name('admin.student.update');
     Route::post('admin/student/update/{id}', 'App\Http\Controllers\StudentController@storeUpdateStudent')->name('admin.student.storeUpdate');
+    Route::get('admin/student/import', 'App\Http\Controllers\StudentController@import')->name('admin.student.import');
+    Route::post('admin/student/import', 'App\Http\Controllers\StudentController@storeImport')->name('admin.student.storeImport');
+    Route::get('/admin/student/download-file-student-import-form', function() {
+        $path = storage_path('import/StudentTestImport.xlsx');
+        return response()->download($path);
+    })->name('admin.student.download.import_file');
 
     // departments
     Route::get('admin/department/all', 'App\Http\Controllers\DepartmentController@allDepartments')->name('admin.department.all');
@@ -98,8 +104,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/post-category/create', 'App\Http\Controllers\PostCategoryController@store')->name('admin.category.store');
     Route::get('admin/post-category/update/{id}', 'App\Http\Controllers\PostCategoryController@update')->name('admin.category.update');
     Route::post('admin/post-category/update/{id}', 'App\Http\Controllers\PostCategoryController@storeUpdate')->name('admin.category.storeUpdate');
-    
 
+    // posts
+    Route::get('admin/post/all', 'App\Http\Controllers\PostController@all')->name('admin.post.all');
+    Route::get('admin/post/create', 'App\Http\Controllers\PostController@create')->name('admin.post.create');
+    Route::post('admin/post/create', 'App\Http\Controllers\PostController@store')->name('admin.post.store');
+    Route::get('admin/post/update/{id}', 'App\Http\Controllers\PostController@update')->name('admin.post.update');
+    Route::post('admin/post/update/{id}', 'App\Http\Controllers\PostController@storeUpdate')->name('admin.post.storeUpdate');
+    
+    // ckeditor
+    Route::post('ckeditor/upload', 'App\Http\Controllers\CKEditorController@upload')->name('ckeditor.upload');
 
     // <= student =>
     Route::get('/student/dashboard', 'App\Http\Controllers\Student\StudentController@show')->name('student.dashboard');

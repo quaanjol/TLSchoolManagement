@@ -1,12 +1,12 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Tạo mới phụ huynh
+Tạo mới sinh viên
 @endsection
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.parent.all') }}">
+    <a href="{{ Route('admin.student.all') }}">
         <button class="btn btn-primary mb-3" type="button">
             Quay lại danh sách
         </button>

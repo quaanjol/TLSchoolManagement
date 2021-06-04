@@ -262,4 +262,26 @@ class StudentController extends Controller
             return redirect('/admin/student/all');
         }
     }
+
+    // import
+    public function import(Request $request) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        $employee = $user->Employee;
+        $theme = $user->theme;
+        $heading = ["vietnamese" => "Import file sinh viên", "english" => "Dashboard"];
+        $departments = Department::orderBy('id', 'DESC')->get();
+        $parentSchools = ParentSchool::orderBy('id', 'DESC')->get();
+        return view('admin.web.student.import')->with([
+            'user' => $user,
+            'theme' => $theme,
+            'employee' => $employee,
+            'heading' => $heading,
+            'departments' => $departments,
+            'parentSchools' => $parentSchools
+        ]);
+    }
 }

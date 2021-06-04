@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Tất cả thể loại
+Tất cả bài đăng
 @endsection
 
 @section('style')
@@ -15,7 +15,7 @@ Tất cả thể loại
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.category.create') }}"><button class="btn btn-primary mb-3">
+    <a href="{{ Route('admin.post.create') }}"><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
         
@@ -23,7 +23,7 @@ Tất cả thể loại
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            Tất cả thể loại
+            Tất cả bài đăng
             </h6>
         </div>
         <div class="card-body">
@@ -33,45 +33,60 @@ Tất cả thể loại
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">
-                                Tên
+                                Tiêu đề
                             </th>
                             <th scope="col">
-                                Mô tả
+                                Thông tin
+                            </th>
+                            <th scope="col">
+                                Nội dung
                             </th>
                             <th scope="col">
                                 Sửa
                             </th>
-                            <!-- <th scope="col">
+                            <th scope="col">
                                 Xoá
-                            </th> -->
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($postCategories as $category)
+                        @foreach($posts as $post)
                             <tr>
                                 <th scope="col">
                                     {{$loop->iteration}}
                                 </th>
                                 <th>
-                                    {{ $category->name }}
+                                    {{ $post->title }}
                                 </th>
                                 <th>
-                                    {{ $category->description }}
+                                    <ul class="custom-ul">
+                                        <li>
+                                            <b>Thể loại: </b> {{ $post->PostCategory->name }}
+                                        </li>
+                                        @if($post->post_category_id == $event_post_category)
+                                        <li>
+                                            <b>Ngày sự kiện (nếu là sự kiện): </b> {{ $post->event_date }}
+                                        </li>    
+                                        @endif
+                                    </ul>
                                 </th>
                                 <th>
-                                    <a href="{{ Route('admin.category.update', ['id' => $category->id]) }}">
+                                    {!!Str::words($post->description, 15)!!}
+                                </th>
+                                <th>
+                                    <a href="{{ Route('admin.post.update', ['id' => $post->id]) }}">
                                         <button class="btn btn-info">
                                         Sửa
                                         </button>
                                     </a>
                                 </th>
-                                <!-- <th>
-                                    <form method="post" action="../../postCategories/{{$category->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
+                                <th>
+                                    <form method="post" action="../../posts/{{$post->id}}" onsubmit="return confirm('Bạn chắc muốn xoá chứ?')">
                                         @csrf
                                         @method('delete')
                                         <input type="submit" name="" value="Xoá" class="btn btn-danger">
                                     </form>
-                                </th> -->
+                                </th>
                             </tr>
                         @endforeach
                     </tbody>
@@ -85,6 +100,6 @@ Tất cả thể loại
 
 @section('scripts')
 <script>
-    document.getElementById('postCategoryLi').classList.add('active');
+    document.getElementById('postLi').classList.add('active');
 </script>
 @endsection

@@ -1,12 +1,12 @@
 @extends('admin.layouts.master')
 
 @section('title')
-Tạo mới môn học
+Tạo mới thể loại
 @endsection
 
 @section('content')
 <div class="container">
-    <a href="{{ Route('admin.subject.all') }}">
+    <a href="{{ Route('admin.category.all') }}">
         <button class="btn btn-primary mb-3" type="button">
             Quay lại danh sách
         </button>
@@ -17,7 +17,7 @@ Tạo mới môn học
             <h6 class="m-0 font-weight-bold text-primary">From {{ config('app.name') }} with <i class="fas fa-heart text-danger"></i></h6>
         </div>
         <div class="card-body">
-            <form action="{{ Route('admin.subject.store') }}" method="post" id="mainForm">
+            <form action="{{ Route('admin.category.store') }}" method="post" id="mainForm">
                 @csrf
                 <div class="row">
                     <div class="col-12 col-md-6">
@@ -26,37 +26,6 @@ Tạo mới môn học
                             Tên
                             </label>
                             <input type="text" name="name" id="name" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label for="credit">
-                            Mã môn học
-                            </label>
-                            <input type="text" id="code" name="code" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label for="credit">
-                            Số tín chỉ
-                            </label>
-                            <input type="text" id="credit" name="credit" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <label for="departments">
-                            Trực thuộc khoa
-                            </label>
-                            <input type="checkbox" class="" name="checkAllDepartments" id="checkAllDepartments" value="">
-                            @foreach($departments as $department)
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input department_input" name="departments[]" value="{{ $department->id }}">{{ $department->name }}
-                                </label>
-                            </div>
-                            @endforeach
                         </div>
                     </div>
                     <div class="col-12">
@@ -83,18 +52,6 @@ Tạo mới môn học
 
 @section('scripts')
 <script>
-    document.getElementById('parentLi').classList.add('active');
-
-    document.getElementById('checkAllDepartments').addEventListener('change', (e) => {
-        if(e.target.checked == true) {
-            Array.from(document.querySelectorAll('.department_input')).forEach(item => {
-                item.checked = true;
-            })
-        } else {
-            Array.from(document.querySelectorAll('.department_input')).forEach(item => {
-                item.checked = false;
-            })
-        }
-    })
+    document.getElementById('postCategoryLi').classList.add('active');
 </script>
 @endsection

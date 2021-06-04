@@ -18,6 +18,9 @@ Tất cả sinh viên
     <a href="{{ Route('admin.student.create') }}"><button class="btn btn-primary mb-3">
     Tạo mới
     </button></a>
+    <a href="{{ Route('admin.student.import') }}"><button class="btn btn-success mb-3">
+    Import file
+    </button></a>
         
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

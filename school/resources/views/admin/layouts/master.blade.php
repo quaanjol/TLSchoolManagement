@@ -255,10 +255,10 @@
                     <h6 class="collapse-header">
                     Thao tác:
                     </h6>
-                    <a class="collapse-item" href="">
+                    <a class="collapse-item" href="{{ route('admin.post.all') }}">
                     Hiển thị tất cả
                     </a>
-                    <a class="collapse-item" href="">
+                    <a class="collapse-item" href="{{ route('admin.post.create') }}">
                     Tạo mới
                     </a>
                 </div>
@@ -405,9 +405,9 @@
         <footer class="sticky-footer bg-white" id="my-footer">
             <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <img src="{{ URL::asset('images/logo-07.png') }}" alt="" width="200px;">
-                </div>
+                </div> -->
                 <span>Copyright &copy; {{ config('app.name') }} <span id="current-year"></span></span>
                 <script>
                     var present = new Date();

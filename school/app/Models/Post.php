@@ -12,12 +12,12 @@ class Post extends Model
     use SoftDeletes;
     protected $date = ['deleted_at'];
 
-    // belongs to employee, caregory
+    // belongs to employee, category
     public function Employee() {
         return $this->belongsTo('App\Models\Employee');
     }
 
-    public function Category() {
+    public function PostCategory() {
         return $this->belongsTo('App\Models\PostCategory');
     }
 }

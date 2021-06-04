@@ -37,8 +37,12 @@ class UserController extends BaseController
     // show
     public function show() {
         $departments = Department::orderBy('id', 'DESC')->get();
+        $newss = Post::orderBy('id', 'desc')->limit(3)->get();
+        $events = Post::orderBy('id', 'desc')->where('post_category_id', '=', 6)->limit(2)->get();
         return view('user.web.index')->with([
-            'departments' => $departments
+            'departments' => $departments,
+            'newss' => $newss,
+            'events' => $events
         ]);
     }
 }
