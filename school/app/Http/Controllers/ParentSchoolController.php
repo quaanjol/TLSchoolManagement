@@ -100,8 +100,8 @@ class ParentSchoolController extends Controller
         $newUser = new User();
         $newUser->name = $eName;
 
-        // define this user as a teacher
-        $newUser->role_id = 4;
+        // define this user as a parent
+        $newUser->role_id = _CONST::PARENT_ROLE_ID;
         $newUser->username = $eName;
         $newUser->email = $email;
         $newUser->title = "";
@@ -192,7 +192,7 @@ class ParentSchoolController extends Controller
         $newUser->name = $eName;
 
         // define this user as a parent
-        $newUser->role_id = 4;
+        $newUser->role_id = _CONST::PARENT_ROLE_ID;
         $newUser->email = $email;
 
         // $this->validate($request, [

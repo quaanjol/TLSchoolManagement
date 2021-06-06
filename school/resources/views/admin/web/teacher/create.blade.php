@@ -120,7 +120,7 @@ Tạo mới giảng viên
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="status">
-                                trạng thái
+                                Trạng thái
                             </label>
                             <select name="status" id="status" class="form-control" required>
                                 <option value="1">Hoạt động</option>

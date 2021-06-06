@@ -10,6 +10,7 @@ class Employee extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $fillable = ['user_id', 'type', 'name', 'phone', 'email', 'gender', 'dob', 'doj', 'department_id', 'address'];
     protected $date = ['deleted_at'];
 
     // belongs to user, department

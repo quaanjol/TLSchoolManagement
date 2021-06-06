@@ -2,12 +2,12 @@
 
 namespace App\Imports;
 
-use App\Models\Student;
+use App\Models\Employee;
 use App\Models\User;
 use App\Http\Controllers\_CONST;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class StudentsImport implements ToModel
+class TeachersImport implements ToModel
 {
     /**
     * @param array $row
@@ -24,14 +24,17 @@ class StudentsImport implements ToModel
             return null;
         }
 
+        // dd($row);
+
         $user = new User();
         $user->name = $row[0];
         $user->email = $row[2];
         // define this user as a student
-        $user->role_id = _CONST::STUDENT_ROLE_ID;
-        $user->title = "";
+        $user->role_id = _CONST::TEACHER_ROLE_ID;
+        $title = $row[8];
+        $user->title = $title;
         $user->theme = "danger";
-        $user->password = bcrypt("student123");
+        $user->password = bcrypt("teacher123");
         $user->save();
 
         $gender = 1;
@@ -42,23 +45,22 @@ class StudentsImport implements ToModel
         } elseif($row[3] == "Khác") {
             $gender = 3;
         }
-
         
         $dob = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]);
+        $doj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5]);
+        $address = $row[9];
 
-        //protected $fillable = ['user_id', 'name', 'phone', 'email', 'gender', 'dob', 'sYear', 'department_id', 'parent_school_id', 'address'];
-
-        return new Student([
+        //protected $fillable = ['user_id', 'type', 'name', 'phone', 'email', 'gender', 'dob', 'doj', 'department_id', 'address'];
+        return new Employee([
             'user_id' => $user->id,
+            'type' => 'teacher',
             'name' => $row[0],
             'phone' => $row[1],
             'email' => $row[2],
             'gender' => $gender,
             'dob' => $dob,
-            'sYear' => $row[5],
-            'department_id' => $row[6],
-            'parent_school_id' => $row[7],
-            'address' => $row[8]
+            'doj' => $doj,
+            'department_id' => $row[7]
         ]);
     }
 }

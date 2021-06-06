@@ -116,10 +116,22 @@ class CourseController extends Controller
                 
                 $attendance = $request->attendance;
                 $absence = $request->absence;
+                $late = $request->late;
                 
-                if(count($attendance) > 0) {
+                if($attendance != null && count($attendance) > 0) {
                     foreach($attendance as $att) {
-                        $thisAtt = new Attendance();
+                        $checks = Attendance::where([
+                            ['course_id', '=', $id],
+                            ['student_id', '=', $att],
+                            ['date', '=', date('Y-m-d')]
+                        ])->limit(1)->get();
+    
+                        if(!isset($checks[0])) {
+                            $thisAtt = new Attendance();
+                        } else {
+                            $thisAtt = $checks[0];
+                        }
+                        // $thisAtt = new Attendance();
                         $thisAtt->course_id = $id;
                         $thisAtt->student_id = $att;
                         $thisAtt->date = date('Y-m-d');
@@ -128,9 +140,20 @@ class CourseController extends Controller
                     }
                 }
 
-                if(count($absence) > 0) {
+                if($absence != null && count($absence) > 0) {
                     foreach($absence as $abs) {
-                        $thisAtt = new Attendance();
+                        $checks = Attendance::where([
+                            ['course_id', '=', $id],
+                            ['student_id', '=', $abs],
+                            ['date', '=', date('Y-m-d')]
+                        ])->limit(1)->get();
+    
+                        if(!isset($checks[0])) {
+                            $thisAtt = new Attendance();
+                        } else {
+                            $thisAtt = $checks[0];
+                        }
+                        // $thisAtt = new Attendance();
                         $thisAtt->course_id = $id;
                         $thisAtt->student_id = $abs;
                         $thisAtt->date = date('Y-m-d');
@@ -139,8 +162,81 @@ class CourseController extends Controller
                     }
                 }
 
+                if($late != null && count($late) > 0) {
+                    foreach($late as $lt) {
+                        $checks = Attendance::where([
+                            ['course_id', '=', $id],
+                            ['student_id', '=', $lt],
+                            ['date', '=', date('Y-m-d')]
+                        ])->limit(1)->get();
+    
+                        if(!isset($checks[0])) {
+                            $thisAtt = new Attendance();
+                        } else {
+                            $thisAtt = $checks[0];
+                        }
+                        // $thisAtt = new Attendance();
+                        $thisAtt->course_id = $id;
+                        $thisAtt->student_id = $lt;
+                        $thisAtt->date = date('Y-m-d');
+                        $thisAtt->absence = 2;
+                        $thisAtt->save();
+                    }
+                }
+
                 return redirect()->back();
             }
+        }
+    }
+
+    public function updateAttendance(Request $request, $id, $course_id) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        $course = Course::find($course_id);
+        if($course == null) {
+            $noti = 'Khoá học không tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back();
+        }
+
+        if($course->employee_id != $teacher->id) {
+            $noti = 'Khoá học không thuộc quản lý.';
+            $request->session()->flash('warning', $noti);
+            return redirect('teacher/course/all');
+        }
+
+        $student = Student::find($id);
+        if($student == null) {
+            $noti = 'Sinh viên không tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back();
+        }
+
+        $date = $request->date;
+        $absence = $request->absence;
+
+        $checks = Attendance::where([
+            ['course_id', '=', $course_id],
+            ['student_id', '=', $id],
+            ['date', '=', date('Y-m-d')]
+        ])->limit(1)->get();
+
+        if(!isset($checks[0])) {
+            $noti = 'Thông tin điểm danh không tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect()->back();
+        } else {
+            $thisAtt = $checks[0];
+            $thisAtt->date = $date;
+            $thisAtt->absence = $absence;
+
+            $thisAtt->save();
+            $noti = 'Chỉnh sửa thành công.';
+            $request->session()->flash('success', $noti);
+            return redirect()->back();
         }
     }
 
@@ -214,6 +310,68 @@ class CourseController extends Controller
             $noti = 'Thêm điểm thành công.';
             $request->session()->flash('success', $noti);
             return redirect()->back();
+        }
+    }
+
+    public function updateGrade(Request $request, $id, $course_id) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        $course = Course::find($course_id);
+
+        if($course == null) {
+            $noti = 'Khoá học không tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect('teacher/course/all');
+        } else {
+            $teacher = $user->Employee;
+
+            if($course->employee_id != $teacher->id) {
+                $noti = 'Khoá học không thuộc quản lý.';
+                $request->session()->flash('warning', $noti);
+                return redirect('teacher/course/all');
+            } else {
+                $student = Student::find($id);
+                if($student == null) {
+                    $noti = 'Sinh viên không tồn tại.';
+                    $request->session()->flash('danger', $noti);
+                    return redirect()->back();
+                }
+
+                $name = $request->name;
+                $value = $request->value;
+
+                $grade = Grade::where([
+                    ['course_id', '=', $course_id],
+                    ['student_id', '=', $id],
+                    ['name', '=', $name]
+                ])->limit(1)->get();
+
+                if(!isset($grade[0])) {
+                    $noti = 'Chưa tồn tại thông tin điểm ' . $name . ' cho sinh viên ' . $student->name;
+                    $request->session()->flash('warning', $noti);
+                    return redirect()->back();
+                } else {
+                    $grade = $grade[0];
+
+                    $index = 0;
+                    if($name == 'Giữa kì') {
+                        $index = 30;
+                    } elseif($name == 'Cuối kì') {
+                        $index = 60;
+                    }
+
+                    $grade->grade = $value;
+                    $grade->index = $index;
+                    $grade->save();
+
+                    $noti = 'Chỉnh sửa thành công.';
+                    $request->session()->flash('success', $noti);
+                    return redirect()->back();
+                }
+            }
         }
     }
 }

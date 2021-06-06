@@ -14,11 +14,7 @@ Tất cả khoá học
 @endsection
 
 @section('content')
-<div class="container">
-    <a href="{{ Route('admin.course.create') }}"><button class="btn btn-primary mb-3">
-    Tạo mới
-    </button></a>
-        
+<div class="container">     
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">

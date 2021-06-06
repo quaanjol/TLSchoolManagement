@@ -8,6 +8,9 @@ use App\Models\Role;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\TeachersImport;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\_CONST;
 
 class EmployeeController extends Controller
@@ -323,11 +326,11 @@ class EmployeeController extends Controller
         $newUser->name = $eName;
 
         // define this user as a teacher
-        $newUser->role_id = 3;
+        $newUser->role_id = _CONST::TEACHER_ROLE_ID;
         $newUser->username = $eName . $dob;
         $newUser->title = $title;
         $newUser->email = $email;
-        $newUser->title = "";
+        $newUser->title = $title;
         $newUser->theme = "danger";
         $newUser->password = bcrypt("teacher123");
 
@@ -421,7 +424,7 @@ class EmployeeController extends Controller
         $newUser->name = $eName;
 
         // define this user as a teacher
-        $newUser->role_id = 3;
+        $newUser->role_id = _CONST::TEACHER_ROLE_ID;
         $newUser->title = $title;
         $newUser->email = $email;
 
@@ -460,6 +463,47 @@ class EmployeeController extends Controller
             $noti = 'Xoá không thành công.';
             $request->session()->flash('danger', $noti);
             return redirect('/admin/administrator/all');
+        }
+    }
+
+    // import
+    public function importTeacher(Request $request) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        $employee = $user->Employee;
+        $theme = $user->theme;
+        $heading = ["vietnamese" => "Import file giảng viên", "english" => "Dashboard"];
+        $departments = Department::orderBy('id', 'DESC')->get();
+        return view('admin.web.teacher.import')->with([
+            'user' => $user,
+            'theme' => $theme,
+            'employee' => $employee,
+            'heading' => $heading,
+            'departments' => $departments,
+        ]);
+    }
+
+    public function storeImportTeacher(Request $request) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        if(!$request->file) {
+            $request->session()->flash('danger', 'Import file không thành công.');
+            return back();
+        }
+
+        try {
+            Excel::import(new TeachersImport, $request->file);
+            $request->session()->flash('success', 'Import file thành công.');
+            return back();
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
         }
     }
 }

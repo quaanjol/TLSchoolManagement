@@ -11,6 +11,7 @@ class Student extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $fillable = ['user_id', 'name', 'phone', 'email', 'gender', 'dob', 'sYear', 'department_id', 'parent_school_id', 'address'];
     protected $date = ['deleted_at'];
 
     // belongs to user, parent school
@@ -79,6 +80,15 @@ class Student extends Model
             ['course_id', '=', $courseId],
             ['student_id', '=', $this->id],
             ['absence', '=', 0]
+        ])->get();
+        return $attendances;
+    }
+
+    public function getCourseAttendancesLate($courseId) {
+        $attendances = Attendance::where([
+            ['course_id', '=', $courseId],
+            ['student_id', '=', $this->id],
+            ['absence', '=', 2]
         ])->get();
         return $attendances;
     }

@@ -10,6 +10,9 @@ use App\Models\Student;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\StudentsImport;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\_CONST;
 
 class StudentController extends Controller
@@ -114,8 +117,8 @@ class StudentController extends Controller
         $newUser = new User();
         $newUser->name = $eName;
 
-        // define this user as a teacher
-        $newUser->role_id = 5;
+        // define this user as a student
+        $newUser->role_id = _CONST::STUDENT_ROLE_ID;
         $newUser->username = $eName;
         $newUser->email = $email;
         $newUser->title = "";
@@ -221,7 +224,7 @@ class StudentController extends Controller
         $newUser->name = $eName;
 
         // define this user as a parent
-        $newUser->role_id = 5;
+        $newUser->role_id = _CONST::STUDENT_ROLE_ID;
         $newUser->email = $email;
 
         // $this->validate($request, [
@@ -283,5 +286,26 @@ class StudentController extends Controller
             'departments' => $departments,
             'parentSchools' => $parentSchools
         ]);
+    }
+
+    public function storeImport(Request $request) {
+        $user = auth()->user();
+        if($user == null || ($user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
+            return redirect('/login');
+        }
+
+        if(!$request->file) {
+            $request->session()->flash('danger', 'Import file không thành công.');
+            return back();
+        }
+
+        try {
+            Excel::import(new StudentsImport, $request->file);
+            $request->session()->flash('success', 'Import file thành công.');
+            return back();
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 }

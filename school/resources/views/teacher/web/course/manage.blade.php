@@ -36,7 +36,7 @@ Quản lý khoá học
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="attendanceModalLabel">Checkbox nếu sinh viên vắng mặt</h5>
+                <h5 class="modal-title" id="attendanceModalLabel">Checkbox để điểm danh sinh viên</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -65,6 +65,15 @@ Quản lý khoá học
                                         </div>
                                     </div>
                                 </th>
+                                <th>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="lateAll">Muộn
+                                            </label>
+                                        </div>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,6 +96,15 @@ Quản lý khoá học
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="checkbox" class="form-check-input absence_input" id="absence_{{ $student->id }}" name="absence[]" value="{{ $student->id }}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input late_input" id="late_{{ $student->id }}" name="late[]" value="{{ $student->id }}">
                                             </label>
                                         </div>
                                     </div>
@@ -118,7 +136,8 @@ Quản lý khoá học
                 <!-- <h5 class="modal-title" id="scoreModalLabel">Chấm điểm</h5> -->
                 <div class="form-group">
                     <select name="name" id="name" class="form-control" required>
-                        <option value="" disabled selected>Chọn điểm</option>
+                        <option value="" disabled selected>Chọn loại điểm</option>
+                        <option value="Bonus">Bonus</option>
                         <option value="Giữa kì">Giữa kì</option>
                         <option value="Cuối kì">Cuối kì</option>
                     </select>
@@ -168,7 +187,7 @@ Quản lý khoá học
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-            {{ $course->name }}
+            {{ $course->name }} | Mã khoá học: {{ $course->id }}
             </h6>
         </div>
         <div class="card-body">
@@ -184,7 +203,7 @@ Quản lý khoá học
                                 Thông tin
                             </th>
                             <th scope="col">
-                                Chuyên cần
+                                Điểm danh
                             </th>
                             <th scope="col">
                                 Điểm
@@ -218,6 +237,48 @@ Quản lý khoá học
                                     </ul>
                                 </th>
                                 <th>
+                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateAttendanceModal_{{ $student->id }}">
+                                        Chỉnh sửa
+                                    </button>
+                                    <form action="{{ route('teacher.course.updateAttendance', ['id' => $student->id, 'course_id' => $course->id]) }}" method="post">
+                                        @csrf
+                                        <div class="modal fade bd-example-modal-lg" id="updateAttendanceModal_{{ $student->id }}" tabindex="-1" role="dialog" aria-labelledby="updateAttendanceModalLabel_{{ $student->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="updateAttendanceModalLabel_{{ $student->id }}">
+                                                    Sinh viên: {{ $student->name }}
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <select name="date" id="" class="form-control" required>
+                                                        <option value="" selected disabled>Chọn ngày</option>
+                                                        @foreach($student->getCourseAttendances($course->id) as $att)
+                                                        <option value="{{ $att->date }}">{{ $att->date }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="absence" id="" class="form-control" required>
+                                                        <option value="" selected disabled>Chọn trạng thái</option>
+                                                        <option value="0">Có mặt</option>
+                                                        <option value="1">Vắng mặt</option>
+                                                        <option value="2">Muộn</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </form>
                                     @if($student->getCourseAttendances($course->id)->count() == 0)
                                     Chưa có buổi điểm danh nào
                                     @else
@@ -242,18 +303,70 @@ Quản lý khoá học
                                                     @endif
                                                 @endforeach
                                             </li>
+                                            <li>
+                                                Muộn: 
+                                                @foreach($student->getCourseAttendancesLate($course->id) as $index => $attendance)
+                                                    @if($index == ($student->getCourseAttendancesLate($course->id)->count() - 1))
+                                                    {{ $attendance->date }}
+                                                    @else
+                                                    {{ $attendance->date }}, 
+                                                    @endif
+                                                @endforeach
+                                            </li>
                                         </ul>
                                         
                                     @endif
                                 </th>
                                 <th>
+                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateGradeModal_{{ $student->id }}">
+                                        Chỉnh sửa
+                                    </button>
+                                    <form action="{{ route('teacher.course.updateGrade', ['id' => $student->id, 'course_id' => $course->id]) }}" method="post">
+                                        @csrf
+                                        <div class="modal fade bd-example-modal-lg" id="updateGradeModal_{{ $student->id }}" tabindex="-1" role="dialog" aria-labelledby="updateGradeModalLabel_{{ $student->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="updateGradeModalLabel_{{ $student->id }}">
+                                                    Sinh viên: {{ $student->name }}
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <select name="name" id="" class="form-control" required>
+                                                        <option value="" disabled selected>Chọn loại điểm</option>
+                                                        <option value="Bonus">Bonus</option>
+                                                        <option value="Giữa kì">Giữa kì</option>
+                                                        <option value="Cuối kì">Cuối kì</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">Giá trị</label>
+                                                    <input type="number" name="value" min="0" max="10" step="0.01" id="" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </form>
                                     <ul class="custom-ul">
                                         <li>
                                         Điểm chuyên cần: 
                                         @if($student->getCourseAttendances($course->id)->count() == 0)
                                         Chưa có
                                         @else
-                                        {{ $student->getCourseAttendancesNotAbsence($course->id)->count() }}/{{ $classCount }}
+                                        <ul class="custom-ul">
+                                            <li>Có mặt: {{ $student->getCourseAttendancesNotAbsence($course->id)->count() }}</li>
+                                            <li>Vắng mặt: {{ $student->getCourseAttendancesAbsence($course->id)->count() }}</li>
+                                            <li>Muộn: {{ $student->getCourseAttendancesLate($course->id)->count() }}</li>
+                                        </ul>
                                         @endif
                                         </li>
                                         <li>
@@ -291,15 +404,19 @@ Quản lý khoá học
 
     var attendanceCheckBox = document.querySelectorAll('.attendance_input')
     var absenceCheckBox = document.querySelectorAll('.absence_input')
+    var lateCheckBox = document.querySelectorAll('.late_input')
 
     Array.from(attendanceCheckBox).forEach(item => {
         var boxId = item.id.split("_")[1];
         var thisAbsence = document.getElementById(`absence_${boxId}`);
+        var thisLate = document.getElementById(`late_${boxId}`);
         
         item.addEventListener('change', e => {
             if (e.target.checked == true) {
                 thisAbsence.checked = false
+                thisLate.checked = false
                 document.getElementById('absenceAll').checked = false;
+                document.getElementById('lateAll').checked = false;
             } else {
                 thisAbsence.checked = true
             }
@@ -309,10 +426,29 @@ Quản lý khoá học
     Array.from(absenceCheckBox).forEach(item => {
         var boxId = item.id.split("_")[1];
         var thisAttendance = document.getElementById(`attendance_${boxId}`);
+        var thisLate = document.getElementById(`late_${boxId}`);
         item.addEventListener('change', e => {
             if (e.target.checked == true) {
                 thisAttendance.checked = false
+                thisLate.checked = false
                 document.getElementById('attendanceAll').checked = false;
+                document.getElementById('lateAll').checked = false;
+            } else {
+                thisAttendance.checked = true
+            }
+        })
+    })
+
+    Array.from(lateCheckBox).forEach(item => {
+        var boxId = item.id.split("_")[1];
+        var thisAttendance = document.getElementById(`attendance_${boxId}`);
+        var thisAbsence = document.getElementById(`absence_${boxId}`);
+        item.addEventListener('change', e => {
+            if (e.target.checked == true) {
+                thisAttendance.checked = false
+                thisAbsence.checked = false
+                document.getElementById('attendanceAll').checked = false;
+                document.getElementById('absenceAll').checked = false;
             } else {
                 thisAttendance.checked = true
             }
@@ -322,8 +458,7 @@ Quản lý khoá học
     document.getElementById('attendanceAll').addEventListener('change', e => {
         if(e.target.checked == true) {
             document.getElementById('absenceAll').checked = false
-        } else {
-            document.getElementById('absenceAll').checked = true
+            document.getElementById('lateAll').checked = false
         }
 
         Array.from(attendanceCheckBox).forEach(item => {
@@ -335,6 +470,12 @@ Quản lý khoá học
         })
 
         Array.from(absenceCheckBox).forEach(item => {
+            if(e.target.checked == true) {
+                item.checked = false
+            }
+        })
+
+        Array.from(lateCheckBox).forEach(item => {
             if(e.target.checked == true) {
                 item.checked = false
             } else {
@@ -346,8 +487,7 @@ Quản lý khoá học
     document.getElementById('absenceAll').addEventListener('change', e => {
         if(e.target.checked == true) {
             document.getElementById('attendanceAll').checked = false
-        } else {
-            document.getElementById('attendanceAll').checked = true
+            document.getElementById('lateAll').checked = false
         }
 
         Array.from(absenceCheckBox).forEach(item => {
@@ -361,8 +501,43 @@ Quản lý khoá học
         Array.from(attendanceCheckBox).forEach(item => {
             if(e.target.checked == true) {
                 item.checked = false
+            }
+        })
+
+        Array.from(lateCheckBox).forEach(item => {
+            if(e.target.checked == true) {
+                item.checked = false
             } else {
                 item.checked = true
+            }
+        })
+    })
+
+    document.getElementById('lateAll').addEventListener('change', e => {
+        if(e.target.checked == true) {
+            document.getElementById('attendanceAll').checked = false
+            document.getElementById('absenceAll').checked = false
+        }
+
+        Array.from(lateCheckBox).forEach(item => {
+            if(e.target.checked == true) {
+                item.checked = true
+            } else {
+                item.checked = false
+            }
+        })
+
+        Array.from(attendanceCheckBox).forEach(item => {
+            if(e.target.checked == true) {
+                item.checked = false
+            } else {
+                item.checked = true
+            }
+        })
+
+        Array.from(absenceCheckBox).forEach(item => {
+            if(e.target.checked == true) {
+                item.checked = false
             }
         })
     })

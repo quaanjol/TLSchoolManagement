@@ -55,6 +55,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/teacher/create', 'App\Http\Controllers\EmployeeController@storeTeacher')->name('admin.teacher.store');
     Route::get('admin/teacher/update/{id}', 'App\Http\Controllers\EmployeeController@updateTeacher')->name('admin.teacher.update');
     Route::post('admin/teacher/update/{id}', 'App\Http\Controllers\EmployeeController@storeUpdateTeacher')->name('admin.teacher.storeUpdate');
+    Route::get('admin/teacher/import', 'App\Http\Controllers\EmployeeController@importTeacher')->name('admin.teacher.import');
+    Route::post('admin/teacher/import', 'App\Http\Controllers\EmployeeController@storeImportTeacher')->name('admin.teacher.storeImport');
+    Route::get('/admin/teacher/download-file-teacher-import-form', function() {
+        $path = storage_path('import/TeacherTestImport.xlsx');
+        return response()->download($path);
+    })->name('admin.teacher.download.import_file');
 
     // parents
     Route::get('admin/parent/all', 'App\Http\Controllers\ParentSchoolController@allParentSchools')->name('admin.parent.all');
@@ -154,5 +160,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/teacher/course/manage/{id}/{slug}', 'App\Http\Controllers\Teacher\CourseController@manage')->name('teacher.course.manage');
     Route::post('/teacher/course/checkAttendance/{id}', 'App\Http\Controllers\Teacher\CourseController@checkAttendance')->name('teacher.course.checkAttendance');
     Route::post('/teacher/course/addGrade/{id}', 'App\Http\Controllers\Teacher\CourseController@addGrade')->name('teacher.course.addGrade');
+    Route::post('/teacher/course/attendance/update/{id}/{course_id}', 'App\Http\Controllers\Teacher\CourseController@updateAttendance')->name('teacher.course.updateAttendance');
+    Route::post('/teacher/course/grade/update/{id}/{course_id}', 'App\Http\Controllers\Teacher\CourseController@updateGrade')->name('teacher.course.updateGrade');
     
 });

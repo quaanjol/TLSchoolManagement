@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Student;
 use App\Http\Controllers\_CONST;
 
 class CourseController extends Controller
@@ -63,10 +64,16 @@ class CourseController extends Controller
 
         $course = Course::find($id);
 
+        if($course == null) {
+            $noti = 'Khoá học không tồn tại.';
+            $request->session()->flash('danger', $noti);
+            return redirect('student/course/all');
+        }
+
         $allStudents = Student::all();
         $registeredStudents = [];
         foreach($allStudents as $student) {
-            if(checkRegisteredCourse($id) == true) {
+            if($student->checkRegisteredCourse($id) == true) {
                 $registeredStudents[] = $student;
             }
         }
@@ -77,38 +84,33 @@ class CourseController extends Controller
                 return redirect('student/course/all');
         }
 
-        if($course == null) {
-            $noti = 'Khoá học không tồn tại.';
+        
+        $student = $user->Student;
+
+        if($course->Subject->checkStudent($student->department_id) == false) {
+            $noti = 'Khoá học không đuợc đăng kí vì khác khoa.';
             $request->session()->flash('danger', $noti);
             return redirect('student/course/all');
-        } else {
-            $student = $user->Student;
+        }
 
-            if($course->Subject->checkStudent($student->department_id) == false) {
-                $noti = 'Khoá học không đuợc đăng kí vì khác khoa.';
+        $registeredCourses = $student->courses;
+        if($registeredCourses == null) {
+            $registeredCourses = [];
+            $registeredCourses[] = $id;
+        } else {
+            $registeredCourses = unserialize($registeredCourses);
+            if(in_array($id, $registeredCourses)) {
+                $noti = 'Khoá học đã được đăng kí.';
                 $request->session()->flash('danger', $noti);
                 return redirect('student/course/all');
-            }
-
-            $registeredCourses = $student->courses;
-            if($registeredCourses == null) {
-                $registeredCourses = [];
-                $registeredCourses[] = $id;
             } else {
-                $registeredCourses = unserialize($registeredCourses);
-                if(in_array($id, $registeredCourses)) {
-                    $noti = 'Khoá học đã được đăng kí.';
-                    $request->session()->flash('danger', $noti);
-                    return redirect('student/course/all');
-                } else {
-                    $registeredCourses[] = $id;
-                }
+                $registeredCourses[] = $id;
             }
-            $student->courses = serialize($registeredCourses);
-            $student->save();
-            $noti = 'Đăng kí khoá học thành công.';
-            $request->session()->flash('success', $noti);
-            return redirect('student/course/all');
         }
+        $student->courses = serialize($registeredCourses);
+        $student->save();
+        $noti = 'Đăng kí khoá học thành công.';
+        $request->session()->flash('success', $noti);
+        return redirect('student/course/all');
     }
 }
