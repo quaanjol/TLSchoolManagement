@@ -125,22 +125,19 @@ class StudentController extends Controller
         $newUser->theme = "danger";
         $newUser->password = bcrypt("student123");
 
-        $this->validate($request, [
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
-        // dd($user);
+        try {
+            $newUser->save();
 
-        $newUser->save();
+            $student->user_id = $newUser->id;
+            $student->save();
 
-        $student->user_id = $newUser->id;
-        $student->save();
-
-        $noti = 'Thêm thành công. Để sinh viên mới login, dùng email của sinh viên đó với password "student123"';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/student/all');
+            $noti = 'Thêm thành công. Để sinh viên mới login, dùng email của sinh viên đó với password "student123"';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/student/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 
     public function updateStudent($id) {
@@ -227,19 +224,17 @@ class StudentController extends Controller
         $newUser->role_id = _CONST::STUDENT_ROLE_ID;
         $newUser->email = $email;
 
-        // $this->validate($request, [
-        //     'email' => [
-        //         'required',
-        //         Rule::unique('users')->ignore($user->id),
-        //     ],
-        // ]);
+        try {
+            $newUser->save();
+            $student->save();
 
-        $newUser->save();
-        $student->save();
-
-        $noti = 'Chỉnh sửa thành công.';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/student/all');
+            $noti = 'Chỉnh sửa thành công.';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/student/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 
     public function destroy(Request $request, $id) {

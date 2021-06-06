@@ -117,21 +117,18 @@ class EmployeeController extends Controller
         $newUser->theme = "danger";
         $newUser->password = bcrypt("admin123");
 
-        $this->validate($request, [
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
+        try {
+            $newUser->save();
+            $employee->user_id = $newUser->id;
+            $employee->save();
 
-        $newUser->save();
-
-        $employee->user_id = $newUser->id;
-        $employee->save();
-
-        $noti = 'Thêm thành công. Để nhân viên mới login, dùng email của nhân viên đó với password "admin123"';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/administrator/all');
+            $noti = 'Thêm thành công. Để nhân viên mới login, dùng email của nhân viên đó với password "admin123"';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/administrator/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        } 
     }
 
     public function updateEmployee($id) {
@@ -215,19 +212,17 @@ class EmployeeController extends Controller
         $newUser->role_id = $role_id;
         $newUser->email = $email;
 
-        // $this->validate($request, [
-        //     'email' => [
-        //         'required',
-        //         Rule::unique('users')->ignore($user->id),
-        //     ],
-        // ]);
+        try {
+            $newUser->save();
+            $employee->save();
 
-        $newUser->save();
-        $employee->save();
-
-        $noti = 'Chỉnh sửa thành công.';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/administrator/all');
+            $noti = 'Chỉnh sửa thành công.';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/administrator/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        } 
     }
 
     // teachers section
@@ -334,21 +329,19 @@ class EmployeeController extends Controller
         $newUser->theme = "danger";
         $newUser->password = bcrypt("teacher123");
 
-        $this->validate($request, [
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
+        try {
+            $newUser->save();
 
-        $newUser->save();
+            $employee->user_id = $newUser->id;
+            $employee->save();
 
-        $employee->user_id = $newUser->id;
-        $employee->save();
-
-        $noti = 'Thêm thành công. Để giáo viên mới login, dùng email của giáo viên đó với password "teacher123"';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/teacher/all');
+            $noti = 'Thêm thành công. Để giáo viên mới login, dùng email của giáo viên đó với password "teacher123"';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/teacher/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        } 
     }
 
     public function updateTeacher($id) {
@@ -428,19 +421,18 @@ class EmployeeController extends Controller
         $newUser->title = $title;
         $newUser->email = $email;
 
-        // $this->validate($request, [
-        //     'email' => [
-        //         'required',
-        //         Rule::unique('users')->ignore($user->id),
-        //     ],
-        // ]);
 
-        $newUser->save();
-        $employee->save();
+        try {
+            $newUser->save();
+            $employee->save();
 
-        $noti = 'Chỉnh sửa thành công.';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/teacher/all');
+            $noti = 'Chỉnh sửa thành công.';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/teacher/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 
     public function destroy(Request $request, $id) {

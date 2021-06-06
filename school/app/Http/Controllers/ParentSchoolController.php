@@ -108,21 +108,19 @@ class ParentSchoolController extends Controller
         $newUser->theme = "danger";
         $newUser->password = bcrypt("parent123");
 
-        $this->validate($request, [
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
+        try {
+            $newUser->save();
 
-        $newUser->save();
+            $parentSchool->user_id = $newUser->id;
+            $parentSchool->save();
 
-        $parentSchool->user_id = $newUser->id;
-        $parentSchool->save();
-
-        $noti = 'Thêm thành công. Để phụ huynh mới login, dùng email của phụ huynh đó với password "parent123"';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/parent/all');
+            $noti = 'Thêm thành công. Để phụ huynh mới login, dùng email của phụ huynh đó với password "parent123"';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/parent/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 
     public function updateParentSchool($id) {
@@ -195,19 +193,17 @@ class ParentSchoolController extends Controller
         $newUser->role_id = _CONST::PARENT_ROLE_ID;
         $newUser->email = $email;
 
-        // $this->validate($request, [
-        //     'email' => [
-        //         'required',
-        //         Rule::unique('users')->ignore($user->id),
-        //     ],
-        // ]);
+        try {
+            $newUser->save();
+            $parentSchool->save();
 
-        $newUser->save();
-        $parentSchool->save();
-
-        $noti = 'Chỉnh sửa thành công.';
-        $request->session()->flash('success', $noti);
-        return redirect('admin/parent/all');
+            $noti = 'Chỉnh sửa thành công.';
+            $request->session()->flash('success', $noti);
+            return redirect('admin/parent/all');
+        } catch(\Exception $e) {
+            $request->session()->flash('danger', $e->getMessage());
+            return back();
+        }
     }
 
     public function destroy(Request $request, $id) {
