@@ -10,6 +10,7 @@ class Grade extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $fillable = ['course_id', 'student_id', 'name', 'grade', 'index'];
     protected $date = ['deleted_at'];
 
     // belongs to course, student

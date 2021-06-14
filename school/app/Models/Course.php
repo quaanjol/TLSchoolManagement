@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Student;
 
 class Course extends Model
 {
@@ -28,5 +29,19 @@ class Course extends Model
 
     public function Grades() {
         return $this->hasMany('App\Models\Grade');
+    }
+
+    // custom functions
+    public function getAllStudents() {
+        $allStudents = Student::all();
+
+        $students = [];
+        foreach($allStudents as $student)  {
+            if($student->checkRegisteredCourse($this->id) == true) {
+                $students[] = $student;
+            }
+        }
+
+        return $students;
     }
 }

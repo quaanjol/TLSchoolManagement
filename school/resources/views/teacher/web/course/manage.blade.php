@@ -10,20 +10,44 @@ Quản lý khoá học
         list-style-type: square;
         margin-left: -18px;
     }
+
+    .btn-pink {
+        background-color: #c261ff !important;
+        color: #ffffff !important;
+    }
+
+    .btn-pink:hover {
+        opacity: 0.8;
+    }
+
+    .a-disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.6;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="container">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#attendanceModal">
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#attendanceModal" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
         Điểm danh
     </button>
-    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#scoreModal">
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#scoreModal" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
         Thêm điểm
     </button>
-    <a href="">
-        <button type="button" class="btn btn-danger mb-3">
+    <button type="button" class="btn btn-warning mb-3" data-toggle="modal" data-target="#importScoreModal" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
+        Import điểm
+    </button>
+    <!-- <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#bonusModal">
+        Bonus điểm
+    </button> -->
+    <button type="button" class="btn btn-pink mb-3" data-toggle="modal" data-target="#scoreModal">
+        Export điểm
+    </button>
+    <a href="{{ route('teacher.course.endCourse', ['id' => $course->id]) }}" onclick="return confirm('Bạn chắc muốn kết thúc khoá học chứ? Sau khi kết thúc khoá học, mọi thông tin không thể cập nhật được nữa.')">
+        <button type="button" class="btn btn-danger mb-3" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
             Kết thúc khoá học
         </button>
     </a>
@@ -152,6 +176,7 @@ Quản lý khoá học
                         <thead>
                             <tr>
                                 <th>Sinh viên</th>
+                                <th>Thêm điểm</th>
                                 <th>
                                     Điểm
                                 </th>
@@ -165,6 +190,15 @@ Quản lý khoá học
                                 </th>
                                 <th>
                                     <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="grade_{{ $student->id }}" name="grades[]" value="{{ $student->id }}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
                                         <input type="number" step="0.01" class="form-control grade_input" id="" name="grade_{{ $student->id }}" min="0" max="10" required value="0">
                                     </div>
                                 </th>
@@ -172,6 +206,103 @@ Quản lý khoá học
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Hoàn tất</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </form>
+
+    <!-- bonus modal -->
+    <!-- Modal -->
+    <!-- <form action="{{ route('teacher.course.addBonus', ['id' => $course->id]) }}" method="post">
+        @csrf
+        <div class="modal fade bd-example-modal-lg" id="bonusModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bonusModalLabel">Thêm điểm bonus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sinh viên</th>
+                                <th>
+                                    Thêm điểm
+                                </th>
+                                <th>
+                                    Điểm
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($students as $student)
+                            <tr>
+                                <th>
+                                    {{ $student->name }}
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="bonus_{{ $student->id }}" name="bonus[]" value="{{ $student->id }}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" min="0" max="10" name="bonus_{{ $student->id }}" id="" value="0">
+                                    </div>
+                                </th>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </form> -->
+
+    <!-- import grades file modal -->
+    <!-- Modal -->
+
+    <form action="{{ route('teacher.course.importGradesFile', ['id' => $course->id]) }}" method="post" enctype="multipart/form-data" id="mainForm">
+        @csrf
+        <div class="modal fade bd-example-modal-lg" id="importScoreModal" tabindex="-1" role="dialog" aria-labelledby="importScoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importScoreModalLabel">Import file điểm giữa kì cho sinh viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a href="{{ route('teacher.course.exportGradesFile', ['id' => $course->id]) }}">
+                    Tải file mẫu để nhập điểm ở đây                
+                </a>
+                <hr/>
+                <div class="form-group">
+                    <label for="file">Upload File (XLSX only)</label>
+                    <br/>
+                    <!-- teacher.course.exportGradesFile -->
+                    <input type="file" class="form-file-control" required id="" name="file">
                 </div>
             </div>
             <div class="modal-footer">
@@ -221,6 +352,7 @@ Quản lý khoá học
                                 </th>
                                 <th>
                                     <ul class="custom-ul">
+                                        <li>Mã sinh viên: {{ $student->id }}</li>
                                         <li>Email: {{ $student->email }}</li>
                                         <li>SĐTT: {{ $student->phone }}</li>
                                         <li>Địa chỉ: {{ $student->address }}</li>
@@ -237,7 +369,7 @@ Quản lý khoá học
                                     </ul>
                                 </th>
                                 <th>
-                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateAttendanceModal_{{ $student->id }}">
+                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateAttendanceModal_{{ $student->id }}" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
                                         Chỉnh sửa
                                     </button>
                                     <form action="{{ route('teacher.course.updateAttendance', ['id' => $student->id, 'course_id' => $course->id]) }}" method="post">
@@ -287,9 +419,9 @@ Quản lý khoá học
                                                 Có mặt: 
                                                 @foreach($student->getCourseAttendancesNotAbsence($course->id) as $index => $attendance)
                                                     @if($index == ($student->getCourseAttendancesNotAbsence($course->id)->count() - 1))
-                                                    {{ $attendance->date }}
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}
                                                     @else
-                                                    {{ $attendance->date }}, 
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}, 
                                                     @endif
                                                 @endforeach
                                             </li>
@@ -297,9 +429,9 @@ Quản lý khoá học
                                                 Vắng mặt: 
                                                 @foreach($student->getCourseAttendancesAbsence($course->id) as $index => $attendance)
                                                     @if($index == ($student->getCourseAttendancesAbsence($course->id)->count() - 1))
-                                                    {{ $attendance->date }}
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}
                                                     @else
-                                                    {{ $attendance->date }}, 
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}, 
                                                     @endif
                                                 @endforeach
                                             </li>
@@ -307,9 +439,9 @@ Quản lý khoá học
                                                 Muộn: 
                                                 @foreach($student->getCourseAttendancesLate($course->id) as $index => $attendance)
                                                     @if($index == ($student->getCourseAttendancesLate($course->id)->count() - 1))
-                                                    {{ $attendance->date }}
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}
                                                     @else
-                                                    {{ $attendance->date }}, 
+                                                    {{date('d/m/Y', strtotime($attendance->date))}}, 
                                                     @endif
                                                 @endforeach
                                             </li>
@@ -318,7 +450,7 @@ Quản lý khoá học
                                     @endif
                                 </th>
                                 <th>
-                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateGradeModal_{{ $student->id }}">
+                                    <button type="button" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#updateGradeModal_{{ $student->id }}" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
                                         Chỉnh sửa
                                     </button>
                                     <form action="{{ route('teacher.course.updateGrade', ['id' => $student->id, 'course_id' => $course->id]) }}" method="post">
@@ -370,6 +502,59 @@ Quản lý khoá học
                                         @endif
                                         </li>
                                         <li>
+                                        Điểm bonus: 
+                                        @if($student->getBonusGrade($course->id, $student->id)->count() <= 0)
+                                        Chưa có
+                                        @else
+                                            @foreach($student->getBonusGrade($course->id, $student->id) as $bonus)
+                                            <ul class="custom-ul">
+                                                <li>
+                                                    <!-- <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#attendanceModal">
+                                                        Điểm danh
+                                                    </button> -->
+                                                    <a href="" data-toggle="modal" data-target="#updateBonusModal_{{ $bonus->id }}" <?php if($course->status == 0) { ?>class="a-disabled"<?php } ?> >
+                                                        {{ $bonus->grade }}
+                                                    </a>
+                                                    <!-- bonus modal -->
+                                                    <!-- Modal -->
+                                                    <form action="{{ route('teacher.course.updateBonus', ['id' => $student->id, 'course_id' => $course->id]) }}" method="post">
+                                                        @csrf
+                                                        <div class="modal fade bd-example-modal-lg" id="updateBonusModal_{{ $bonus->id }}" tabindex="-1" role="dialog" aria-labelledby="updateBonusModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateBonusModalLabel">Chỉnh sửa/xoá điểm bonus của sinh viên: {{ $student->name }}</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label">
+                                                                            <input type="checkbox" class="form-check-input" name="delete" value="1">Checkbox nếu muốn xoá điểm bonus
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="hidden" class="form-control" id="" name="origin" value="{{ $bonus->grade }}">
+                                                                    <input type="number" class="form-control" id="" name="grade" value="{{ $bonus->grade }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                            @endforeach
+                                        @endif
+                                        </li>
+                                        <li>
                                         Điểm giữa kì: 
                                         @if(!isset($student->getMidTermGrade($course->id, $student->id)[0]))
                                         Chưa có
@@ -385,6 +570,11 @@ Quản lý khoá học
                                         {{ $student->getLastTermGrade($course->id, $student->id)[0]->grade }}
                                         @endif
                                         </li>
+                                        @if($student->result != null)
+                                        <li>
+                                            Điểm tổng kết: {{ $student->resultBaseFour }} ({{ $student->rank }})
+                                        </li>
+                                        @endif
                                     </ul>
                                 </th>
                             </tr>

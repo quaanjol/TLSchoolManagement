@@ -162,5 +162,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/teacher/course/addGrade/{id}', 'App\Http\Controllers\Teacher\CourseController@addGrade')->name('teacher.course.addGrade');
     Route::post('/teacher/course/attendance/update/{id}/{course_id}', 'App\Http\Controllers\Teacher\CourseController@updateAttendance')->name('teacher.course.updateAttendance');
     Route::post('/teacher/course/grade/update/{id}/{course_id}', 'App\Http\Controllers\Teacher\CourseController@updateGrade')->name('teacher.course.updateGrade');
-    
+    Route::post('/teacher/course/addBonus/{id}', 'App\Http\Controllers\Teacher\CourseController@addBonus')->name('teacher.course.addBonus');
+    Route::post('/teacher/course/bonus/update/{id}/{course_id}', 'App\Http\Controllers\Teacher\CourseController@updateBonus')->name('teacher.course.updateBonus');
+    Route::get('/teacher/course/endCourse/{id}', 'App\Http\Controllers\Teacher\CourseController@endCourse')->name('teacher.course.endCourse');
+    Route::get('/teacher/course/exportGradesFile/{id}', 'App\Http\Controllers\Teacher\CourseController@exportGradesFile')->name('teacher.course.exportGradesFile');
+    Route::post('/teacher/course/importGradesFile/{id}', 'App\Http\Controllers\Teacher\CourseController@importGradesFile')->name('teacher.course.importGradesFile');
 });
