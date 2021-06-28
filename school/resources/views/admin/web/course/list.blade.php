@@ -42,6 +42,9 @@ Tất cả khoá học
                                 Trạng thái
                             </th>
                             <th scope="col">
+                                Quản lí
+                            </th>
+                            <th scope="col">
                                 Sửa
                             </th>
                             <th scope="col">
@@ -83,6 +86,13 @@ Tất cả khoá học
                                     @else 
                                     <span class="badge badge-danger">Finish</span>
                                     @endif
+                                </th>
+                                <th>
+                                    <a href="{{ route('admin.course.manage', ['id' => $course->id, 'slug' => Str::slug($course->name)]) }}">
+                                        <button class="btn btn-warning">
+                                            <i class="fas fa-tasks"></i>
+                                        </button>
+                                    </a>
                                 </th>
                                 <th>
                                     <a href="{{ Route('admin.course.update', ['id' => $course->id]) }}">

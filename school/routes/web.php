@@ -103,8 +103,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/course/update/{id}', 'App\Http\Controllers\CourseController@update')->name('admin.course.update');
     Route::post('admin/course/update/{id}', 'App\Http\Controllers\CourseController@storeUpdate')->name('admin.course.storeUpdate');
     Route::get('admin/course/view/{id}', 'App\Http\Controllers\CourseController@view')->name('admin.course.view');
+    Route::get('/admin/course/manage/{id}/{slug}', 'App\Http\Controllers\CourseController@manage')->name('admin.course.manage');
+    Route::get('/admin/course/reopenCourse/{id}', 'App\Http\Controllers\CourseController@reopenCourse')->name('admin.course.reopenCourse');
 
-    // post categiries
+    // post categories
     Route::get('admin/post-category/all', 'App\Http\Controllers\PostCategoryController@all')->name('admin.category.all');
     Route::get('admin/post-category/create', 'App\Http\Controllers\PostCategoryController@create')->name('admin.category.create');
     Route::post('admin/post-category/create', 'App\Http\Controllers\PostCategoryController@store')->name('admin.category.store');

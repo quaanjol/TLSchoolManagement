@@ -218,7 +218,7 @@ class CourseController extends Controller
 
     public function updateAttendance(Request $request, $id, $course_id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -237,7 +237,7 @@ class CourseController extends Controller
             return redirect()->back();
         }
 
-        if($course->employee_id != $teacher->id) {
+        if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
             $noti = 'Khoá học không thuộc quản lý.';
             $request->session()->flash('warning', $noti);
             return redirect('teacher/course/all');
@@ -278,7 +278,7 @@ class CourseController extends Controller
     // add grade
     public function addGrade(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -297,7 +297,7 @@ class CourseController extends Controller
 
             $teacher = $user->Employee;
 
-            if($course->employee_id != $teacher->id) {
+            if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
                 $noti = 'Khoá học không thuộc quản lý.';
                 $request->session()->flash('warning', $noti);
                 return redirect('teacher/course/all');
@@ -357,7 +357,7 @@ class CourseController extends Controller
 
     public function updateGrade(Request $request, $id, $course_id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -376,7 +376,7 @@ class CourseController extends Controller
 
             $teacher = $user->Employee;
 
-            if($course->employee_id != $teacher->id) {
+            if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
                 $noti = 'Khoá học không thuộc quản lý.';
                 $request->session()->flash('warning', $noti);
                 return redirect('teacher/course/all');
@@ -415,6 +415,7 @@ class CourseController extends Controller
                     $grade->index = $index;
                     $grade->save();
 
+
                     $noti = 'Chỉnh sửa thành công.';
                     $request->session()->flash('success', $noti);
                     return redirect()->back();
@@ -444,7 +445,7 @@ class CourseController extends Controller
 
             $teacher = $user->Employee;
 
-            if($course->employee_id != $teacher->id) {
+            if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
                 $noti = 'Khoá học không thuộc quản lý.';
                 $request->session()->flash('warning', $noti);
                 return redirect('teacher/course/all');
@@ -490,7 +491,7 @@ class CourseController extends Controller
 
     public function updateBonus(Request $request, $id, $course_id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -509,7 +510,7 @@ class CourseController extends Controller
 
             $teacher = $user->Employee;
 
-            if($course->employee_id != $teacher->id) {
+            if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
                 $noti = 'Khoá học không thuộc quản lý.';
                 $request->session()->flash('warning', $noti);
                 return redirect('teacher/course/all');
@@ -555,7 +556,7 @@ class CourseController extends Controller
     // end course
     public function endCourse(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -574,7 +575,7 @@ class CourseController extends Controller
 
             $teacher = $user->Employee;
 
-            if($course->employee_id != $teacher->id) {
+            if($course->employee_id != $teacher->id && $user->role_id == _CONST::TEACHER_ROLE_ID) {
                 $noti = 'Khoá học không thuộc quản lý.';
                 $request->session()->flash('warning', $noti);
                 return redirect('teacher/course/all');
@@ -686,7 +687,7 @@ class CourseController extends Controller
     // CourseStudentsExport export grade templates
     public function exportGradesFile(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 
@@ -764,7 +765,7 @@ class CourseController extends Controller
 
     public function importGradesFile(Request $request, $id) {
         $user = auth()->user();
-        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID)) {
+        if($user == null || ($user->role_id != _CONST::TEACHER_ROLE_ID && $user->role_id != _CONST::ADMIN_ROLE_ID && $user->role_id != _CONST::SUB_ADMIN_ROLE_ID)) {
             return redirect('/login');
         }
 

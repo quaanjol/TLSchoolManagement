@@ -233,4 +233,71 @@ class Student extends Model
         $gpa->save();
         return $gpa;
     }
+
+    public function reCalculateFinalGrade() {
+        $finalGrade = $student->getFinalGrade($id, $student->id);
+
+        if(!isset($finalGrade[0])) {
+            $finalGrade = new FinalGrade();
+        } else {
+            $finalGrade = $finalGrade[0];
+        }
+
+        $finalGrade->course_id = $id;
+        $finalGrade->student_id = $student->id;
+
+        $attendanceGrade = ($student->getCourseAttendancesNotAbsence($id)->count() * 1 + $student->getCourseAttendancesLate($id)->count() * 0.5) / $student->getCourseAttendances($id)->count();
+        $attendanceCount = 1;
+        $bonuses = $student->getBonusGrade($id, $student->id);
+        foreach($bonuses as $bonus) {
+            $attendanceGrade += $bonus->grade;
+            $attendanceCount++;
+        }
+
+        $attendanceGrade = $attendanceGrade / $attendanceCount;
+        $midTermGrade = $student->getMidTermGrade($id, $student->id);
+        $lastTermGrade = $student->getLastTermGrade($id, $student->id);
+
+        if(!isset($midTermGrade[0])) {
+            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $student->name . ' chưa có điểm giữa kì.';
+            $request->session()->flash('warning', $noti);
+            return redirect()->back();
+        } else {
+            $midTermGrade = $midTermGrade[0];
+        }
+
+        if(!isset($lastTermGrade[0])) {
+            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $student->name . ' chưa có điểm cuối kì.';
+            $request->session()->flash('warning', $noti);
+            return redirect()->back();
+        } else {
+            $lastTermGrade = $lastTermGrade[0];
+        }
+
+        $result  = ($attendanceGrade * 10 + $midTermGrade->grade * 30 + $lastTermGrade->grade * 60) / 100;
+        $resultBaseFour = $result / 2.5;
+
+        //8.5 – 10	A
+        //7.0 – 8.4	B
+        //5.5 - 6.9 C
+        //4.0 - 6.4 D
+        //4.0-- F
+
+        $rank = "F";
+        if($result >= 8.5 && $result <= 10) {
+            $rank = 1;
+        } elseif($result >= 7.0 && $result < 8.5) {
+            $rank = 2;
+        } elseif($result >= 5.5 && $result < 7) {
+            $rank = 3;
+        } elseif($result >= 4.0 && $result < 5.5) {
+            $rank = 4;
+        } elseif($result < 4.0) {
+            $rank = 5;
+        }
+        $finalGrade->result = $result;
+        $finalGrade->resultBaseFour = $resultBaseFour;
+        $finalGrade->rank = $rank;
+        $finalGrade->save();
+    }
 }
