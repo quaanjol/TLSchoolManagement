@@ -43,9 +43,13 @@ Quản lý khoá học
     <!-- <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#bonusModal">
         Bonus điểm
     </button> -->
-    <button type="button" class="btn btn-pink mb-3" data-toggle="modal" data-target="#scoreModal">
-        Export điểm
-    </button>
+    
+    <a href="{{ route('teacher.course.exportGradesFile', ['id' => $course->id]) }}">
+        <button type="button" class="btn btn-pink mb-3">
+            Export điểm
+        </button>
+    </a>
+    
     <a href="{{ route('teacher.course.endCourse', ['id' => $course->id]) }}" onclick="return confirm('Bạn chắc muốn kết thúc khoá học chứ? Sau khi kết thúc khoá học, mọi thông tin không thể cập nhật được nữa.')">
         <button type="button" class="btn btn-danger mb-3" <?php if($course->status == 0) { ?> disabled="true"<?php } ?> >
             Kết thúc khoá học

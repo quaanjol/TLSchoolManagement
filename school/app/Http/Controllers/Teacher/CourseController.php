@@ -697,31 +697,68 @@ class CourseController extends Controller
             $request->session()->flash('danger', $noti);
             return redirect('teacher/course/all');
         } else {
-            if($course->status == 0) {
-                $noti = 'Không thể chỉnh sửa khoá học đã kết thúc.';
-                $request->session()->flash('warning', $noti);
-                return redirect()->back();
-            }
-
             $allStudents = $course->getAllStudents();
 
             $excelArray = [];
             foreach($allStudents as $student) {
                 $tmp = [];
-                for($i = 0; $i < 2; $i++) {
-                    $type = "Cuối kì";
-                    if($i % 2 == 0) {
+                for($i = 0; $i < 3; $i++) {
+                    if($i == 0) {
+                        $type = "Cuối kì";
+                    } else if($i == 1) {
                         $type = "Giữa kì";
+                    } else if($i == 2) {
+                        $type = "Bonus";
                     }
-                    $tmp['Mã khoá học'] = $id;
-                    $tmp['id'] = $student->id;
-                    $tmp['name'] = $student->name;
-                    $tmp['Loại điểm'] = $type;
-                    array_push($excelArray, $tmp);
+
+                    if($type == "Bonus") {
+                        $bonusGrade = '';
+                        $bonusGrades = Grade::where([
+                            ['course_id', '=', $id],
+                            ['student_id', '=', $student->id],
+                            ['name', '=', $type]
+                        ])->get();
+
+                        foreach($bonusGrades as $index => $bonus) {
+                            if($index == 0) {
+                                $bonusGrade .= $bonus->grade;
+                            } else {
+                                $bonusGrade .= ', ' . $bonus->grade;
+                            }
+                            
+                            $tmp = [];
+                            $tmp['Mã khoá học'] = $id;
+                            $tmp['id'] = $student->id;
+                            $tmp['name'] = $student->name;
+                            $tmp['type'] = $type;
+                            $tmp['grade'] = $bonus->grade;
+                            array_push($excelArray, $tmp);
+                        }
+                    } else {
+                        $thisGrade = Grade::where([
+                            ['course_id', '=', $id],
+                            ['student_id', '=', $student->id],
+                            ['name', '=', $type]
+                        ])->limit(1)->get();
+
+
+                        if(!isset($thisGrade[0])) {
+                            $grade = 'Chưa có';
+                        } else {
+                            $grade = $thisGrade[0]->grade;
+                        }
+
+                        $tmp['Mã khoá học'] = $id;
+                        $tmp['id'] = $student->id;
+                        $tmp['name'] = $student->name;
+                        $tmp['type'] = $type;
+                        $tmp['grade'] = $grade;
+                        array_push($excelArray, $tmp);
+                    }
                 }
             }
 
-            return Excel::download(new CourseStudentsExport($excelArray), 'khoá học ' . $course->name . '.xlsx');
+            return Excel::download(new CourseStudentsExport($excelArray), 'Điểm khoá học ' . $course->name . '.xlsx');
         }
     }
 

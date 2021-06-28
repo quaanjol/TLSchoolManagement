@@ -29,7 +29,7 @@ class CourseStudentsExport implements FromArray, WithHeadings
         return ["Mã khoá học", 
                 "Mã sinh viên", 
                 "Tên", 
-                "Giữa kì", 
-                "Cuối kì"];
+                "Loại điểm", 
+                "Điểm"];
     }
 }
