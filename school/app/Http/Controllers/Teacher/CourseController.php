@@ -32,7 +32,8 @@ class CourseController extends Controller
         $heading = ["vietnamese" => "Tất cả khoá học", "english" => "Dashboard"];
 
         $todayDate = date('Y-m-d');
-        $courses = Course::orderBy('id', 'DESC')->whereDate('start', '>', $todayDate)->paginate(6);
+        // $courses = Course::orderBy('id', 'DESC')->whereDate('start', '>', $todayDate)->paginate(6);
+        $courses = Course::orderBy('id', 'DESC')->paginate(6);
 
         return view('teacher.web.course.list')->with([
             'user' => $user,
@@ -335,7 +336,11 @@ class CourseController extends Controller
                     if(!isset($grade[0])) {
                         $grade = new Grade();
                     } else {
-                        $grade = $grade[0];
+                        if($name == 'Bonus') {
+                            $grade = new Grade();
+                        } else {
+                            $grade = $grade[0];
+                        }
                     }
 
                     // dd($grade);

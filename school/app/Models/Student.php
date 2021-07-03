@@ -206,6 +206,7 @@ class Student extends Model
         } else {
             $result = 0;
             $totalIndex = 0;
+            $rank = 1;
             foreach($finalGrades as $finalGrade) {
                 $credit = Course::find($finalGrade->course_id)->Subject->credit;
                 $totalIndex += $credit;
@@ -234,8 +235,8 @@ class Student extends Model
         return $gpa;
     }
 
-    public function reCalculateFinalGrade() {
-        $finalGrade = $student->getFinalGrade($id, $student->id);
+    public function reCalculateCourseFinalGrade($id) {
+        $finalGrade = $student->getFinalGrade($id, $this->id);
 
         if(!isset($finalGrade[0])) {
             $finalGrade = new FinalGrade();
@@ -244,22 +245,22 @@ class Student extends Model
         }
 
         $finalGrade->course_id = $id;
-        $finalGrade->student_id = $student->id;
+        $finalGrade->student_id = $this->id;
 
         $attendanceGrade = ($student->getCourseAttendancesNotAbsence($id)->count() * 1 + $student->getCourseAttendancesLate($id)->count() * 0.5) / $student->getCourseAttendances($id)->count();
         $attendanceCount = 1;
-        $bonuses = $student->getBonusGrade($id, $student->id);
+        $bonuses = $student->getBonusGrade($id, $this->id);
         foreach($bonuses as $bonus) {
             $attendanceGrade += $bonus->grade;
             $attendanceCount++;
         }
 
         $attendanceGrade = $attendanceGrade / $attendanceCount;
-        $midTermGrade = $student->getMidTermGrade($id, $student->id);
-        $lastTermGrade = $student->getLastTermGrade($id, $student->id);
+        $midTermGrade = $student->getMidTermGrade($id, $this->id);
+        $lastTermGrade = $student->getLastTermGrade($id, $this->id);
 
         if(!isset($midTermGrade[0])) {
-            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $student->name . ' chưa có điểm giữa kì.';
+            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $this->name . ' chưa có điểm giữa kì.';
             $request->session()->flash('warning', $noti);
             return redirect()->back();
         } else {
@@ -267,7 +268,7 @@ class Student extends Model
         }
 
         if(!isset($lastTermGrade[0])) {
-            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $student->name . ' chưa có điểm cuối kì.';
+            $noti = 'Không thể kết thúc khoá học vì sinh viên ' . $this->name . ' chưa có điểm cuối kì.';
             $request->session()->flash('warning', $noti);
             return redirect()->back();
         } else {
