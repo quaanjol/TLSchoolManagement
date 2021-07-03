@@ -78,7 +78,21 @@ Tất cả khoá học
                                     @endif
                                 </th>
                                 <th>
-                                    
+                                    <!-- show courses' grades -->
+                                    {{ $student->getFinalGradeValue($course->id, $student->id) }}
+                                    @if($student->getFinalGradeValue($course->id, $student->id) >= 3.2)
+                                    (A)
+                                    @elseif($student->getFinalGradeValue($course->id, $student->id) < 3.2 && $student->getFinalGradeValue($course->id, $student->id) >= 2.5)
+                                    (B)
+                                    @elseif($student->getFinalGradeValue($course->id, $student->id) < 2.5 && $student->getFinalGradeValue($course->id, $student->id) >= 2)
+                                    (C)
+                                    @elseif($student->getFinalGradeValue($course->id, $student->id) < 2 && $student->getFinalGradeValue($course->id, $student->id) >= 1.5)
+                                    (D)
+                                    @elseif($student->getFinalGradeValue($course->id, $student->id) < 1.5)
+                                    (F)
+                                    @elseif($student->getFinalGradeValue($course->id, $student->id) == 'n/a')
+
+                                    @endif
                                 </th>
                             </tr>
                         @endforeach

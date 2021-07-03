@@ -24,7 +24,7 @@ class CourseController extends Controller
         // damn
 
         $todayDate = date('Y-m-d');
-        $courses = Course::orderBy('id', 'DESC')->whereDate('start', '>', $todayDate)->paginate(6);
+        $courses = Course::orderBy('id', 'DESC')->paginate(6);
 
         return view('student.web.course.list')->with([
             'user' => $user,

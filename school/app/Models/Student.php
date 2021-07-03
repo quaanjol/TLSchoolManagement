@@ -125,6 +125,19 @@ class Student extends Model
         ])->limit(1)->get();
     }
 
+    public function getFinalGradeValue($id, $student_id) {
+        $finalGrade = FinalGrade::where([
+            ['course_id', '=', $id],
+            ['student_id', '=', $student_id],
+        ])->limit(1)->get();
+
+        if(isset($finalGrade[0])) {
+            return $finalGrade[0]->resultBaseFour;
+        } else {
+            return 'n/a';
+        }
+    }
+
     public function checkMidTermGrade($course_id) {
         $grade = Grade::where([
             ['course_id', '=', $course_id],
