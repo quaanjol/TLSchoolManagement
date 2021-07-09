@@ -56,6 +56,7 @@ Quản lý khoá học
         </button>
     </a>
 
+
     <!-- attendance modal -->
     <!-- Modal -->
     <form action="{{ route('teacher.course.checkAttendance', ['id' => $course->id]) }}" method="post">
@@ -325,6 +326,20 @@ Quản lý khoá học
             {{ $course->name }} | Mã khoá học: {{ $course->id }}
             </h6>
         </div>
+
+        <div class="mt-4 text-center small">
+            <h6>Report chuyên cần</h6>
+            <span class="mr-2">
+                <i class="fas fa-circle text-primary"></i> Có mặt
+            </span>
+            <span class="mr-2">
+                <i class="fas fa-circle text-warning"></i> Vắng mặt
+            </span>
+            <span class="mr-2">
+                <i class="fas fa-circle text-danger"></i> Muộn
+            </span>
+        </div>
+
         <div class="card-body">
         <div class="table-responsive">
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
@@ -342,6 +357,9 @@ Quản lý khoá học
                             </th>
                             <th scope="col">
                                 Điểm
+                            </th>
+                            <th scope="col">
+                                Report chuyên cần
                             </th>
                         </tr>
                     </thead>
@@ -493,7 +511,7 @@ Quản lý khoá học
                                         </div>
                                     </form>
                                     <ul class="custom-ul">
-                                        <li>
+                                        <!-- <li>
                                         Điểm chuyên cần: 
                                         @if($student->getCourseAttendances($course->id)->count() == 0)
                                         Chưa có
@@ -504,7 +522,7 @@ Quản lý khoá học
                                             <li>Muộn: {{ $student->getCourseAttendancesLate($course->id)->count() }}</li>
                                         </ul>
                                         @endif
-                                        </li>
+                                        </li> -->
                                         <li>
                                         Điểm bonus: 
                                         @if($student->getBonusGrade($course->id, $student->id)->count() <= 0)
@@ -581,6 +599,15 @@ Quản lý khoá học
                                         @endif
                                     </ul>
                                 </th>
+                                <th>
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart_{{ $student->id }}" 
+                                        class="attendance_report" 
+                                        data-late = "{{ $student->getCourseAttendancesLate($course->id)->count() }}"
+                                        data-attendance = "{{ $student->getCourseAttendancesNotAbsence($course->id)->count() }}" 
+                                        data-absence =  "{{ $student->getCourseAttendancesAbsence($course->id)->count() }}"></canvas>
+                                    </div>
+                                </th>
                             </tr>
                         @endforeach
                     </tbody>
@@ -593,6 +620,12 @@ Quản lý khoá học
 @endsection
 
 @section('scripts')
+<script src="{{URL::asset('admin/vendor/chart.js/Chart.min.js')}}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{{URL::asset('admin/js/demo/chart-area-demo.js')}}"></script>
+<!-- <script src="{{URL::asset('admin/js/demo/chart-pie-demo.js')}}"></script> -->
+
 <script>
     document.getElementById('courseLi').classList.add('active');
 
@@ -734,6 +767,52 @@ Quản lý khoá học
                 item.checked = false
             }
         })
+    })
+
+
+    // pie chart
+    const attendance_reports = document.querySelectorAll('.attendance_report')
+
+    Array.from(attendance_reports).forEach(item => {
+
+        var data = [item.dataset.attendance, item.dataset.absence, item.dataset.late]
+        var labels = ['Có mặt', 'Vắng mặt', 'Muộn']
+        var backgroundColor = ['#4e73df', '#f6c23e', '#e74a3b'];
+        var hoverBackgroundColor = ['#4e73df', '#f6c23e', '#e74a3b']
+    
+        var myPieChart = new Chart(item, {
+            type: 'doughnut',
+            data: {
+                // labels: ["Direct", "Referral", "Social"],
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    //backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    backgroundColor: backgroundColor,
+                    // backgroundColor: ['#e74a3b', '#f6c23e', '#4e73df', '#1cc88a'],
+                    // hoverBackgroundColor: ['#e74a3b', '#f6c23e', '#4e73df', '#1cc88a'],
+                    hoverBackgroundColor: hoverBackgroundColor,
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
     })
 </script>
 @endsection

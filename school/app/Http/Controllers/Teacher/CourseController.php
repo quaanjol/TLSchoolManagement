@@ -33,7 +33,7 @@ class CourseController extends Controller
 
         $todayDate = date('Y-m-d');
         // $courses = Course::orderBy('id', 'DESC')->whereDate('start', '>', $todayDate)->paginate(6);
-        $courses = Course::orderBy('id', 'DESC')->paginate(6);
+        $courses = Course::where('employee_id', '=', $teacher->id)->orderBy('id', 'DESC')->paginate(6);
 
         return view('teacher.web.course.list')->with([
             'user' => $user,
